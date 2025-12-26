@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeMate | Signup</title>
+  <style>
+        body{
+            background: #ffffe3;
+            font-family: sans-serif;
+            color: #1f2933;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .wrapper{
+            display: flex;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .info-panel{
+            max-width: 360px;
+        }
+
+        .info-panel h1{
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .info-panel p{
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .info-panel ul{
+            padding-left: 20px;
+        }
+
+        .info-panel li{
+            margin-bottom: 10px;
+        }
+
+        .card{
+            background: #6d8196;
+            padding: 30px;
+            border-radius: 12px;
+            width: 320px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            color: white;
+        }
+
+        h2{
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input,select{
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border:none;
+        }
+
+        button{
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            background: #cbcbcb;
+            cursor: pointer;
+        }
+
+        button:hover{
+            background: #bdbdbd;
+        }
+  </style>
+    
+</head>
+<body>
+    <div class="wrapper">
+
+        <!-- Left info section -->
+        <div class="info-panel">
+            <h1>CodeMate</h1>
+            <p>
+                CodeMate is a place for developers to connect, collaborate, and grow together.
+                Whether you're a beginner or a mentor, you’ll always find someone to learn with.
+            </p>
+            <ul>
+                <li>🤝 Find like-minded developers</li>
+                <li>🧠 Learn from mentors</li>
+                <li>🚀 Build projects together</li>
+                <li>💬 Share ideas and get feedback</li>
+            </ul>
+            <p><strong>Start your journey today.</strong></p>
+        </div>
+
+        <!-- Your original card -->
+        <div class="card">
+            <h2>Signup</h2>
+            <form method="post">
+                <input name="name" placeholder="Name" required>
+                <input name="email" placeholder="email" required>
+                <input name="password" type="password" placeholder="Password" required>
+                <select name="skill_level">
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Mentor">Mentor</option>
+                </select>
+                <input name="interests" placeholder="Interests (e.g. Frontend)" required>
+                <button type="submit">Signup</button>
+            </form>
+        </div>
+
+    </div>
+</body>
+</html>
