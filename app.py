@@ -1,9 +1,10 @@
-from flask import Flask,render_template,request,redirect
+from flask import Flask,render_template,request,redirect,session,url_for
 import sqlite3
 
 from init_db import init_db
 
 app=Flask(__name__)
+app.secret_key="super-secret-key-change-this"
 
 # Ensure DB and `users` table exist before handling any requests
 init_db("database.db")
@@ -58,11 +59,13 @@ def login():
 
         conn=get_db()
         cursor=conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE email=? AND password=?",(email,password))
+        cursor.execute("SELECT id,name FROM users WHERE email=? AND password=?",(email,password))
         user=cursor.fetchone()
         conn.close()
 
         if user:
+            session["user_id"]=user[0]
+            session["user_name"]=user[1]
             return redirect("/dashboard")
         
         else:
@@ -72,6 +75,14 @@ def login():
 
 @app.route("/dashboard")
 def dashboard():
-    return "Welcome To CodeMate Dashboard!!"
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    return render_template("dashboard.html",name=session["user_name"])
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
 if __name__=="__main__":
     app.run(debug=True)
