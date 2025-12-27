@@ -1,2 +1,76 @@
-<h2>Welcome,{{name}}</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dahboard-CodeMate</title>
+</head>
+<style>
+    body{
+        margin: 0;
+        font-family: sans-serif;
+        background: #ffffe3;
+        color: #333;
+
+    }
+
+    .header{
+        background: #6d8196;
+        padding: 20px;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .container{
+        padding: 30px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+        gap:20px;
+    }
+
+    .card{
+        background:#6d8196;
+        color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.card h3{
+    margin-top: 0;
+
+}
+
+.logout{
+    color: white;
+    text-decoration: underline;
+}
+</style>
+<body>
+    
+
+<div class="header"><h2>Welcome,{{name}}</h2>
 <a href="/logout">Logout</a>
+</div>
+
+<div class="container">
+    <div class="card">
+        <h3>Match Suggestions</h3>
+        <p>developers with similar intrests will appear here.</p>
+    </div>
+
+
+<div class="card">
+    <h3>Forum Highlights</h3>
+    <p>Trending discussions from your favorite topics.</p>
+</div>
+
+<div class="card">
+    <h3>Mentor Requests</h3>
+    <p>Avialable Mentors you can reach out to.</p>
+</div>
+</div>
+</body>
+</html>
