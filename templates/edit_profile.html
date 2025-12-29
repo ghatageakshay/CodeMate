@@ -1,0 +1,12 @@
+<h2>Edit Profile</h2>
+
+<form method="post">
+    <input name="name" value="{{user[0]}}" required>
+    <select name="skill_level">
+        <option {% if user[1]=='Beginner' %}selected{% endif %}>Beginner</option>
+        <option {% if user[1]=='Intermediate' %}selected{% endif %}>Intermediate</option>
+        <option {% if user[1]=='Mentor' %}selected{% endif %}>Mentor</option>
+    </select>
+    <input name="interests" value="{{ user[2] }}" required>
+    <button type="submit">save</button>
+</form>

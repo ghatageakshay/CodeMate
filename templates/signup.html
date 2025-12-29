@@ -115,6 +115,10 @@
                 </select>
                 <input name="interests" placeholder="Interests (e.g. Frontend)" required>
                 <button type="submit">Signup</button>
+
+                {% if error %}
+                <p style="color: red">{{error}}</p>
+                {% endif %}
             </form>
         </div>
 

@@ -1,76 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dahboard-CodeMate</title>
 </head>
 <style>
-    body{
-        margin: 0;
-        font-family: sans-serif;
-        background: #ffffe3;
-        color: #333;
-
-    }
-
-    .header{
-        background: #6d8196;
-        padding: 20px;
-        color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .container{
-        padding: 30px;
-        display: grid;
-        grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-        gap:20px;
-    }
-
-    .card{
-        background:#6d8196;
-        color: white;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.2);
+:root {
+  --bg-main: #F9FAFB;
+  --bg-card: #FFFFFF;
+  --primary: #2DD4BF;
+  --secondary: #38BDF8;
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+  --border-light: #E5E7EB;
 }
 
-.card h3{
-    margin-top: 0;
-
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: var(--bg-main);
+  color: var(--text-main);
 }
 
-.logout{
-    color: white;
-    text-decoration: underline;
+.header {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  padding: 18px 30px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.header a {
+  color: white;
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.header a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.container {
+  padding: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 18px;
+  padding: 26px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.1);
+}
+
+.card h3 {
+  margin: 0 0 10px;
+  font-size: 1.3rem;
+  color: var(--text-main);
+}
+
+.card p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
 }
 </style>
+
+
 <body>
-    
 
-<div class="header"><h2>Welcome,{{name}}</h2>
-<a href="/logout">Logout</a>
-</div>
 
-<div class="container">
-    <div class="card">
-        <h3>Match Suggestions</h3>
-        <p>developers with similar intrests will appear here.</p>
+    <div class="header">
+        <h2>Welcome,{{name}}</h2>
+        <a href="/profile">Profile</a>
+        <a href="/logout">Logout</a>
     </div>
 
+    <div class="container">
+        <div class="card">
+            <h3>Match Suggestions</h3>
+            <p>developers with similar intrests will appear here.</p>
+        </div>
 
-<div class="card">
-    <h3>Forum Highlights</h3>
-    <p>Trending discussions from your favorite topics.</p>
-</div>
 
-<div class="card">
-    <h3>Mentor Requests</h3>
-    <p>Avialable Mentors you can reach out to.</p>
-</div>
-</div>
+        <div class="card">
+            <h3>Forum Highlights</h3>
+            <p>Trending discussions from your favorite topics.</p>
+        </div>
+
+        <div class="card">
+            <h3>Mentor Requests</h3>
+            <p>Avialable Mentors you can reach out to.</p>
+        </div>
+    </div>
 </body>
+
 </html>
