@@ -4,92 +4,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dahboard-CodeMate</title>
-</head>
-<style>
-:root {
-  --bg-main: #F9FAFB;
-  --bg-card: #FFFFFF;
-  --primary: #2DD4BF;
-  --secondary: #38BDF8;
-  --text-main: #0F172A;
-  --text-muted: #64748B;
-  --border-light: #E5E7EB;
-}
-
+    <title>Dashboard-CodeMate</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <style>
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
-  background: var(--bg-main);
-  color: var(--text-main);
+  background: #f9fafb;
+  color: #0f172a;
 }
 
 .header {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  padding: 18px 30px;
-  color: white;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 16px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
   z-index: 10;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
-.header a {
-  color: white;
+.header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #0f172a;
+}
+
+.header h2 span {
+  color: #2563eb;
+}
+
+.header .nav-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.header .nav-actions a {
+  color: #2563eb;
   text-decoration: none;
-  opacity: 0.9;
+  font-size: 1rem;
 }
 
-.header a:hover {
-  opacity: 1;
+.header .nav-actions a:hover {
   text-decoration: underline;
 }
 
 .container {
-  padding: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
 }
 
 .card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: 18px;
-  padding: 26px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px 32px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
 }
 
 .card h3 {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   font-size: 1.3rem;
-  color: var(--text-main);
+  color: #2563eb;
 }
 
 .card p {
   margin: 0;
-  color: var(--text-muted);
+  color: #64748b;
   line-height: 1.6;
+}
+
+.matches-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 40px;
+}
+
+.matches-container h3 {
+  margin: 0 0 24px;
+  font-size: 1.5rem;
+  color: #2563eb;
+}
+
+.matches-container ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.matches-container li {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  color: #0f172a;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.matches-container li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.1);
+  border-color: #2563eb;
+}
+
+.matches-container p {
+  color: #64748b;
+  font-size: 1rem;
+  text-align: center;
+  padding: 40px;
 }
 </style>
 
 
 <body>
 
+ 
 
     <div class="header">
-        <h2>Welcome,{{name}}</h2>
-        <a href="/profile">Profile</a>
-        <a href="/logout">Logout</a>
+        <h2>Welcome, <span>{{name}}</span></h2>
+        <div class="nav-actions">
+            <a href="/profile">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
     </div>
 
     <div class="container">
@@ -109,6 +160,22 @@ body {
             <p>Avialable Mentors you can reach out to.</p>
         </div>
     </div>
+    {% if matches %}
+    <div class="matches-container">
+      <h3>Match Suggestions</h3>
+      <ul>
+        {% for m in matches %}
+        <li>
+          {{ m[1] }} - {{ m[2] }} - {{ m[3] }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% else %}
+    <div class="matches-container">
+      <p>No matches yet. Invite friends!</p>
+    </div>
+    {% endif %}
 </body>
 
 </html>

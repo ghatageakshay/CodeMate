@@ -3,17 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile-Page</title>
+    <title>Profile - CodeMate</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <style>
+body {
+  margin: 0;
+  background: #f9fafb;
+  color: #0f172a;
+}
+
+.header {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #0f172a;
+}
+
+.header .nav-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.header .nav-actions a {
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.header .nav-actions a:hover {
+  text-decoration: underline;
+}
+
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.profile-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  margin-bottom: 24px;
+}
+
+.profile-card h2 {
+  margin: 0 0 24px;
+  font-size: 1.75rem;
+  color: #2563eb;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 12px;
+}
+
+.profile-info {
+  display: grid;
+  gap: 20px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-value {
+  font-size: 1.125rem;
+  color: #0f172a;
+  font-weight: 500;
+}
+
+.info-value.skill-level {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.info-value.interests {
+  color: #2563eb;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  display: inline-block;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-secondary {
+  background: white;
+  color: #2563eb;
+  border: 1px solid #2563eb;
+}
+
+.btn-secondary:hover {
+  background: #f0f5ff;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 24px 16px;
+  }
+
+  .profile-card {
+    padding: 24px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+</style>
 </head>
 <body>
-    <h2>Your Profile</h2>
-    <p><b>Name:</b>{{user[0]}}</p>
-    <p><b>Email:</b>{{user[1]}}</p>
-    <p><b>skill level:</b>{{user[2]}}</p>
-    <p><b>Interests:</b>{{user[3]}}</p>
+    <div class="header">
+        <h2>Your Profile</h2>
+        <div class="nav-actions">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
 
-    <a href="/profile/edit">Edit Profile</a>
-
-    <a href="/dashboard">Back To Dashboard</a>
+    <div class="profile-container">
+        <div class="profile-card">
+            <h2>Profile Information</h2>
+            <div class="profile-info">
+                <div class="info-item">
+                    <span class="info-label">Name</span>
+                    <span class="info-value">{{user[0]}}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Email</span>
+                    <span class="info-value">{{user[1]}}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Skill Level</span>
+                    <span class="info-value skill-level">{{user[2]}}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Interests</span>
+                    <span class="info-value interests">{{user[3]}}</span>
+                </div>
+            </div>
+            <div class="actions">
+                <a href="/profile/edit" class="btn btn-primary">Edit Profile</a>
+                <a href="/dashboard" class="btn btn-secondary">Back To Dashboard</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

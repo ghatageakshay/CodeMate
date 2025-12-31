@@ -17,6 +17,32 @@ init_db("database.db")
 def get_db():
     return sqlite3.connect("database.db")
 
+def get_matches(user_id):
+    conn=get_db()
+    cursor=conn.cursor()
+
+    #get current user info
+    cursor.execute("select skill_level,interests from users where id=?",(user_id,))
+    user=cursor.fetchone()
+
+    if not user:
+        conn.close()
+        return []
+    
+    skill,interest=user
+
+    cursor.execute("""
+          select id,name,skill_level,interests
+                   from users
+                   where id !=?
+                   and(skill_level=? or interests=?)
+""",(user_id,skill,interest))
+    
+    matches=cursor.fetchall()
+    conn.close()
+
+    return matches
+
 @app.route("/signup",methods=["GET","POST"])
 def signup():
     if request.method=="POST":
@@ -96,7 +122,11 @@ def dashboard():
     if "user_id" not in session:
         return redirect("/login")
     
-    return render_template("dashboard.html",name=session["user_name"])
+    user_id=session["user_id"]
+    matches=get_matches(user_id)
+    print("matches",matches)
+    
+    return render_template("dashboard.html",name=session["user_name"],matches=matches)
 
 @app.route("/logout")
 def logout():

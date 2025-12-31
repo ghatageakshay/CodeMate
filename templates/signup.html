@@ -4,93 +4,155 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CodeMate | Signup</title>
-  <style>
-        body{
-            background: #ffffe3;
-            font-family: sans-serif;
-            color: #1f2933;
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <style>
+        body {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 40px 24px;
         }
 
-        .wrapper{
+        .wrapper {
             display: flex;
-            gap: 50px;
+            gap: 60px;
             align-items: center;
+            max-width: 1100px;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
-        .info-panel{
-            max-width: 360px;
+        .info-panel {
+            max-width: 400px;
+            flex: 1;
+            min-width: 300px;
         }
 
-        .info-panel h1{
-            font-size: 42px;
-            margin-bottom: 10px;
+        .info-panel h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            color: #0f172a;
         }
 
-        .info-panel p{
-            font-size: 16px;
+        .info-panel h1 span {
+            color: #2563eb;
+        }
+
+        .info-panel p {
+            font-size: 1rem;
             line-height: 1.6;
             margin-bottom: 20px;
+            color: #64748b;
         }
 
-        .info-panel ul{
+        .info-panel ul {
             padding-left: 20px;
+            margin-bottom: 20px;
         }
 
-        .info-panel li{
-            margin-bottom: 10px;
+        .info-panel li {
+            margin-bottom: 12px;
+            color: #0f172a;
+            font-size: 1rem;
         }
 
-        .card{
-            background: #6d8196;
-            padding: 30px;
+        .card {
+            background: white;
+            padding: 40px;
             border-radius: 12px;
-            width: 320px;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-            color: white;
+            width: 400px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
         }
 
-        h2{
+        h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            color: #0f172a;
+            font-size: 1.75rem;
         }
 
-        input,select{
+        input, select {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-            border:none;
+            padding: 12px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            font-size: 1rem;
+            box-sizing: border-box;
         }
 
-        button{
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        button {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: none;
-            border-radius: 6px;
-            background: #cbcbcb;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
             cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
         }
 
-        button:hover{
-            background: #bdbdbd;
+        button:hover {
+            background: #1d4ed8;
         }
-  </style>
-    
+
+        .error {
+            color: #dc2626;
+            background: #fef2f2;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            border: 1px solid #fecaca;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .footer-text a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .wrapper {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .info-panel {
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="wrapper">
 
         <!-- Left info section -->
         <div class="info-panel">
-            <h1>CodeMate</h1>
+            <h1>Code<span>Mate</span></h1>
             <p>
                 CodeMate is a place for developers to connect, collaborate, and grow together.
-                Whether you're a beginner or a mentor, you’ll always find someone to learn with.
+                Whether you're a beginner or a mentor, you'll always find someone to learn with.
             </p>
             <ul>
                 <li>🤝 Find like-minded developers</li>
@@ -101,12 +163,12 @@
             <p><strong>Start your journey today.</strong></p>
         </div>
 
-        <!-- Your original card -->
+        <!-- Signup card -->
         <div class="card">
             <h2>Signup</h2>
             <form method="post">
                 <input name="name" placeholder="Name" required>
-                <input name="email" placeholder="email" required>
+                <input name="email" placeholder="Email" required>
                 <input name="password" type="password" placeholder="Password" required>
                 <select name="skill_level">
                     <option value="Beginner">Beginner</option>
@@ -117,9 +179,13 @@
                 <button type="submit">Signup</button>
 
                 {% if error %}
-                <p style="color: red">{{error}}</p>
+                <div class="error">{{error}}</div>
                 {% endif %}
             </form>
+
+            <div class="footer-text">
+                Already have an account? <a href="/login">Log in</a>
+            </div>
         </div>
 
     </div>
