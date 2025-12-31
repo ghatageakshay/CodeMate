@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeMate</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="nav-container">
+        <div class="logo">CodeMate</div>
+        <div class="nav-actions">
+            <a href="/login">Log In</a>
+            <a href="/signup" class="btn-primary">Sign Up</a>
+        </div>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="hero-container">
+        <div class="hero-text">
+            <h1>Find your perfect <span>coding partner</span></h1>
+            <p>Connect with developers and build amazing projects together.</p>
+            <a href="/signup" class="btn-primary">Join Now</a>
+        </div>
+        <div class="hero-image">
+            <img src="/images/homepage.png" alt="CodeMate">
+        </div>
+    </div>
+</section>
+
+<section class="steps">
+    <h2>Start collaborating in 3 steps</h2>
+    <div class="steps-container">
+        <div class="step-card">Create Profile</div>
+        <div class="step-card">Discover Matches</div>
+        <div class="step-card">Collaborate</div>
+    </div>
+</section>
+
+</body>
+</html>

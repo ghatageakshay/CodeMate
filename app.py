@@ -1,10 +1,15 @@
-from flask import Flask,render_template,request,redirect,session,url_for
+from flask import Flask,render_template,request,redirect,session,url_for,send_from_directory
 import sqlite3
+import os
 
 from init_db import init_db
 
 app=Flask(__name__)
 app.secret_key="super-secret-key-change-this"
+
+@app.route('/images/<path:filename>')
+def serve_image(filename):
+    return send_from_directory('images', filename)
 
 # Ensure DB and `users` table exist before handling any requests
 init_db("database.db")
@@ -62,7 +67,7 @@ def signup():
 
 @app.route("/")
 def home():
-    return "Welcome to CodeMate 🚀 — go to /signup"
+    return render_template("home.html")
 
 @app.route("/login",methods=["GET","POST"])
 def login():
@@ -96,7 +101,7 @@ def dashboard():
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect("/login")
+    return redirect("/")
 
 @app.route("/profile")
 def profile():
