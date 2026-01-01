@@ -160,22 +160,27 @@ body {
             <p>Avialable Mentors you can reach out to.</p>
         </div>
     </div>
-    {% if matches %}
     <div class="matches-container">
-      <h3>Match Suggestions</h3>
-      <ul>
-        {% for m in matches %}
+  {% if matches %}
+  <div class="matches-container">
+    <h3>Match Suggestions</h3>
+    <ul>
+      {% for m in matches %}
         <li>
-          {{ m[1] }} - {{ m[2] }} - {{ m[3] }}
+          <strong>{{ m.name }}</strong> — {{ m.skill }}
+          <br>
+          <small>Common interests: {{ ", ".join(m.common_interests) }}</small>
         </li>
-        {% endfor %}
-      </ul>
-    </div>
-    {% else %}
-    <div class="matches-container">
-      <p>No matches yet. Invite friends!</p>
-    </div>
-    {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+{% else %}
+  <div class="matches-container">
+    <p>No matches yet. Invite friends!</p>
+  </div>
+{% endif %}
+
+
 </body>
 
 </html>

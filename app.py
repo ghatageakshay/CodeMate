@@ -7,6 +7,24 @@ from init_db import init_db
 app=Flask(__name__)
 app.secret_key="super-secret-key-change-this"
 
+CS_FIELDS = [
+    "Frontend",
+    "Backend",
+    "Full Stack",
+    "DevOps",
+    "Data Science",
+    "AI/ML",
+    "System Design",
+    "UI/UX",
+    "Cyber Security",
+    "Cloud Computing",
+    "Mobile Development",
+    "Game Development",
+    "Blockchain",
+    "Testing / QA"
+]
+
+
 @app.route('/images/<path:filename>')
 def serve_image(filename):
     return send_from_directory('images', filename)
@@ -30,15 +48,32 @@ def get_matches(user_id):
         return []
     
     skill,interest=user
+    interest_set=set(i.strip().lower() for i in interest.split(","))
+    
 
     cursor.execute("""
           select id,name,skill_level,interests
                    from users
                    where id !=?
-                   and(skill_level=? or interests=?)
-""",(user_id,skill,interest))
+                   
+""",(user_id,))
     
-    matches=cursor.fetchall()
+    others=cursor.fetchall()
+
+    matches=[]
+
+    for uid,name,skill,interests in others:
+        other_interest_set=set(i.strip().lower() for i in interests.split(","))
+
+        common=interest_set & other_interest_set #intersection
+
+        if common:
+            matches.append({
+                "id":uid,
+                "name":name,
+                "skill":skill,
+                "common_interests":list(common)
+            })
     conn.close()
 
     return matches
@@ -50,14 +85,16 @@ def signup():
         email=request.form["email"]
         password=request.form["password"]
         skill=request.form["skill_level"]
-        interests=request.form["interests"]
+       
+        interests_list=request.form.getlist("interests")
+        interests_str=",".join(interests_list)
 
         conn=get_db()
         cursor=conn.cursor()
         try:
             cursor.execute(
                 "INSERT INTO users(name,email,password,skill_level,interests) values(?,?,?,?,?)", 
-                (name,email,password,skill,interests)
+                (name,email,password,skill,interests_str)
             
         )
 
@@ -71,12 +108,12 @@ def signup():
             return redirect("/dashboard")
         
         except sqlite3.IntegrityError:
-            return render_template("signup.html",error="Email Alreday registred")
+            return render_template("signup.html",error="Email Alreday registred",fields=CS_FIELDS)
     
         finally:
             conn.close()
 
-    return render_template("signup.html")
+    return render_template("signup.html",fields=CS_FIELDS)
         
 
 
@@ -124,7 +161,7 @@ def dashboard():
     
     user_id=session["user_id"]
     matches=get_matches(user_id)
-    print("matches",matches)
+    # print("matches",matches)
     
     return render_template("dashboard.html",name=session["user_name"],matches=matches)
 
