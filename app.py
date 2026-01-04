@@ -1,6 +1,7 @@
 from flask import Flask,render_template,request,redirect,session,url_for,send_from_directory
 import sqlite3
 import os
+from werkzeug.security import generate_password_hash,check_password_hash
 
 from init_db import init_db
 
@@ -84,6 +85,7 @@ def signup():
         name=request.form["name"]
         email=request.form["email"]
         password=request.form["password"]
+        hashed_password=generate_password_hash(password)
         skill=request.form["skill_level"]
        
         interests_list=request.form.getlist("interests")
@@ -94,7 +96,7 @@ def signup():
         try:
             cursor.execute(
                 "INSERT INTO users(name,email,password,skill_level,interests) values(?,?,?,?,?)", 
-                (name,email,password,skill,interests_str)
+                (name,email,hashed_password,skill,interests_str)
             
         )
 
@@ -138,15 +140,22 @@ def login():
         email=request.form["email"]
         password=request.form["password"]
 
+
         conn=get_db()
         cursor=conn.cursor()
-        cursor.execute("SELECT id,name FROM users WHERE email=? AND password=?",(email,password))
+        cursor.execute("SELECT id,name,password FROM users WHERE email=? ",(email,))
         user=cursor.fetchone()
         conn.close()
 
         if user:
-            session["user_id"]=user[0]
-            session["user_name"]=user[1]
+            user_id=user[0]
+            name=user[1]
+            stored_hash=user[2]
+
+            if check_password_hash(stored_hash,password):
+                session["user_id"]=user_id
+                session["user_name"]=name
+            
             return redirect("/dashboard")
         
         else:
