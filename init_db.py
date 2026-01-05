@@ -19,6 +19,16 @@ def init_db(db_path: str = "database.db") -> None:
         """
     )
 
+    cursor.execute("""
+              CREATE TABLE IF NOT EXISTS connections(
+                   id integer primary key AUTOINCREMENT,
+                   sender_id integer,
+                   receiver_id integer,
+                   status TEXT DEFAULT 'pending',
+                   created_at TIMESTAMP DEFAULT current_timestamp
+                   );
+""")
+
     conn.commit()
     conn.close()
 

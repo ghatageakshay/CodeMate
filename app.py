@@ -225,5 +225,46 @@ def edit_profile():
     conn.close()
 
     return render_template("edit_profile.html",user=user)
+
+@app.route("/connect",methods=["POST"])
+def connect():
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    sender_id=session["user_id"]
+    receiver_id=request.form["receiver_id"]
+
+    #to aviod self connect
+    if str(sender_id) == receiver_id:
+        return redirect("/dashboard")
+    
+    conn=get_db()
+    cursor=conn.cursor()
+
+    #prevent duplicate requests
+
+    cursor.execute("""
+        select id from connections
+                   where sender_id=? and receiver_id=? and status='pending'
+""",(sender_id,receiver_id))
+    
+    existing=cursor.fetchone()
+
+    if not existing:
+
+        cursor.execute("""
+      insert into connections(sender_id,receiver_id)
+                       values(?,?)
+
+     
+""",(sender_id,receiver_id))
+    
+        conn.commit()
+
+    conn.close()
+
+    return redirect("/dashboard")
+
+
 if __name__=="__main__":
     app.run(debug=True)

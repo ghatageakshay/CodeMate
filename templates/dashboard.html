@@ -170,7 +170,12 @@ body {
           <strong>{{ m.name }}</strong> — {{ m.skill }}
           <br>
           <small>Common interests: {{ ", ".join(m.common_interests) }}</small>
-        </li>
+      
+        <form method="post" action="/connect" style="margin-top:10px;">
+          <input type="hidden" name="receiver_id" value="{{m.id}}">
+          <button type="submit">connect</button>
+        </form>
+          </li>
       {% endfor %}
     </ul>
   </div>
