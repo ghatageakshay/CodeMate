@@ -265,6 +265,45 @@ def connect():
 
     return redirect("/dashboard")
 
+@app.route("/connections/accept",methods=["POST"])
+def accept_connection():
+    if  "user_id" not in session:
+        return redirect("/login")
+    
+    request_id=request.form["request_id"]
 
+    conn=get_db()
+    cursor=conn.cursor()
+
+    cursor.execute("""
+           UPDATE connections 
+                   set status='accepted'
+                   where id=? and receiver_id=?
+ 
+""",(request_id,session["user_id"]))
+    
+    conn.commit()
+    conn.close()
+
+@app.route("/connections/reject",methods=["POST"])
+def reject_connection():
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    request_id=request.form["request_id"]
+
+    conn=get_db()
+    cursor=conn.cursor()
+
+    cursor.execute("""
+     UPDATE connections
+                   set status='rejected'
+                   where id=? and receiver_id=?
+ 
+""",(request_id,session["user_id"]))
+    
+    conn.commit()
+    conn.close()
+    
 if __name__=="__main__":
     app.run(debug=True)
