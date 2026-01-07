@@ -284,6 +284,9 @@ def accept_connection():
     
     conn.commit()
     conn.close()
+    
+    return redirect("/connections")
+
 
 @app.route("/connections/reject",methods=["POST"])
 def reject_connection():
@@ -305,5 +308,61 @@ def reject_connection():
     conn.commit()
     conn.close()
     
+    return redirect("/connections")
+
+@app.route("/connections")
+def connections():
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    user_id=session["user_id"]
+    conn=get_db()
+    cursor=conn.cursor()
+
+    #for incoming requests
+
+    cursor.execute("""
+              SELECT c.id,u.name,u.skill_level,u.interests
+                   from connections c
+                   join users u on c.sender_id=u.id
+                   where c.receiver_id=? and c.status='pending'
+
+""",(user_id,))
+    
+    incoming=cursor.fetchall()
+
+    #for sent requests
+    cursor.execute("""
+
+       select c.id,u.name
+                   from connections c
+                   join users u on c.receiver_id=u.id
+                   where c.sender_id=? AND c.status='pending'
+""",(user_id,))
+    
+    sent=cursor.fetchall()
+
+    #accepted connections
+    cursor.execute("""
+
+          select u.id,u.name,u.skill_level
+                   from connections c
+                   join users u
+                   on(u.id=c.sender_id or u.id=c.receiver_id)
+                   where c.status='accepted'
+                   AND(c.sender_id=? or c.receiver_id=?)
+                   and u.id !=?
+""",(user_id,user_id,user_id))
+    
+    accepted=cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "connections.html",
+        incoming=incoming,
+        sent=sent,
+        accepted=accepted
+    )
 if __name__=="__main__":
     app.run(debug=True)

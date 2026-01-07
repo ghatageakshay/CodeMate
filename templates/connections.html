@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CONNECTIONS</title>
+</head>
+<body>
+    <h2>Incoming Requests</h2>
+    {% if incoming %}
+      {% for r in incoming %}
+      <div class="item">
+        <strong>{{r[1] }}</strong> - {{r[2]}}
+    
+    <form method="post" action="/connections/accept" style="display: inline;">
+        <input type="hidden" name="request_id" value="{{r[0]}}">
+        <button type="submit">Accept</button>
+    </form>
+
+    <form method="post" action="/connections/reject" style="display: inline;">
+        <input type="hidden" name="request_id" value="{{r[0]}}">
+        <button type="submit">Reject</button>
+    </form>
+</div>
+{% endfor %}
+{% else %}
+  <p>No incoming Requests</p>
+
+{% endif %}
+
+<h2>Sent Requests</h2>
+
+{% if sent %}
+  {% for r in sent %}
+   <div class="item">
+    {{ r[1]}} - <em>Pending</em>
+   </div>
+   {% endfor %}
+ {% else %}
+  <p>NO sent Requests</p>
+  {% endif %}
+
+<h2>My Connections</h2>
+
+{% if accepted %}
+  {% for c in accepted %}
+    <div class="item">
+      <strong>{{ c[1] }}</strong> — {{ c[2] }}
+    </div>
+  {% endfor %}
+{% else %}
+  <p>No connections yet</p>
+{% endif %}
+
+
+</body>
+</html>
