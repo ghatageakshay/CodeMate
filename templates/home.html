@@ -3,42 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeMate</title>
+    <title>CodeMate - Find Your Coding Partner</title>
     <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <style>
+body {
+  margin: 0;
+  background: #f9fafb;
+  color: #0f172a;
+  font-family: sans-serif;
+}
+
+.navbar {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.logo span {
+  color: #2563eb;
+}
+
+.nav-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.nav-actions a {
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  transition: all 0.2s ease;
+}
+
+.nav-actions a:hover {
+  text-decoration: underline;
+}
+
+.nav-actions .btn-primary {
+  background: #2563eb;
+  color: white !important;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.nav-actions .btn-primary:hover {
+  background: #1d4ed8;
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.hero {
+  padding: 80px 24px;
+  background: linear-gradient(135deg, #f0f5ff 0%, #ffffff 100%);
+}
+
+.hero-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.hero-text h1 {
+  font-size: 3.5rem;
+  line-height: 1.1;
+  margin: 0;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.hero-text h1 span {
+  color: #2563eb;
+}
+
+.hero-text p {
+  font-size: 1.25rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.hero-cta {
+  margin-top: 8px;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  padding: 14px 32px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 1.125rem;
+  font-weight: 600;
+  display: inline-block;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+.hero-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.steps {
+  padding: 80px 24px;
+  background: white;
+}
+
+.steps-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.steps-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.steps-header h2 {
+  font-size: 2.5rem;
+  color: #0f172a;
+  margin: 0 0 16px 0;
+  font-weight: 700;
+}
+
+.steps-header h2 span {
+  color: #2563eb;
+}
+
+.steps-header p {
+  font-size: 1.125rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+}
+
+.step-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 40px 32px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+}
+
+.step-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.1);
+  border-color: #2563eb;
+}
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.step-card h3 {
+  font-size: 1.5rem;
+  color: #0f172a;
+  margin: 0 0 12px 0;
+  font-weight: 600;
+}
+
+.step-card p {
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 968px) {
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .hero-text h1 {
+    font-size: 2.5rem;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-container {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .nav-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero {
+    padding: 40px 24px;
+  }
+
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .hero-text p {
+    font-size: 1rem;
+  }
+
+  .steps {
+    padding: 60px 24px;
+  }
+
+  .steps-header h2 {
+    font-size: 2rem;
+  }
+}
+    </style>
 </head>
 <body>
-
-<header class="navbar">
-    <div class="nav-container">
-        <div class="logo">CodeMate</div>
-        <div class="nav-actions">
-            <a href="/login">Log In</a>
-            <a href="/signup" class="btn-primary">Sign Up</a>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">Code<span>Mate</span></div>
+            <div class="nav-actions">
+                <a href="/login">Log In</a>
+                <a href="/signup" class="btn-primary">Sign Up</a>
+            </div>
         </div>
-    </div>
-</header>
+    </header>
 
-<section class="hero">
-    <div class="hero-container">
-        <div class="hero-text">
-            <h1>Find your perfect <span>coding partner</span></h1>
-            <p>Connect with developers and build amazing projects together.</p>
-            <a href="/signup" class="btn-primary">Join Now</a>
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-text">
+                <h1>Find your perfect <span>coding partner</span></h1>
+                <p>Connect with developers who share your interests and build amazing projects together. Join a community of passionate coders ready to collaborate.</p>
+                <div class="hero-cta">
+                    <a href="/signup" class="btn-primary">Get Started</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="/images/homepage.png" alt="CodeMate Collaboration">
+            </div>
         </div>
-        <div class="hero-image">
-            <img src="/images/homepage.png" alt="CodeMate">
+    </section>
+
+    <section class="steps">
+        <div class="steps-container">
+            <div class="steps-header">
+                <h2>Start collaborating in <span>3 simple steps</span></h2>
+                <p>Get connected with developers in minutes</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3>Create Profile</h3>
+                    <p>Set up your profile with your skills, interests, and experience level to help others find you.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3>Discover Matches</h3>
+                    <p>Find developers with similar interests and skill levels who are ready to collaborate.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3>Start Collaborating</h3>
+                    <p>Connect with your matches and start building amazing projects together.</p>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
-
-<section class="steps">
-    <h2>Start collaborating in 3 steps</h2>
-    <div class="steps-container">
-        <div class="step-card">Create Profile</div>
-        <div class="step-card">Discover Matches</div>
-        <div class="step-card">Collaborate</div>
-    </div>
-</section>
-
+    </section>
 </body>
 </html>

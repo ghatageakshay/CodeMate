@@ -3,55 +3,370 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CONNECTIONS</title>
+    <title>Connections - CodeMate</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <style>
+body {
+  margin: 0;
+  background: #f9fafb;
+  color: #0f172a;
+}
+
+.header {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #0f172a;
+}
+
+.header h2 span {
+  color: #2563eb;
+}
+
+.header .nav-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.header .nav-actions a {
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.header .nav-actions a:hover {
+  text-decoration: underline;
+}
+
+.connections-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+  border-bottom: 2px solid #e5e7eb;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 12px 24px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #64748b;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+  bottom: -2px;
+}
+
+.tab:hover {
+  color: #2563eb;
+}
+
+.tab.active {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.connections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.connection-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.connection-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+  border-color: #2563eb;
+}
+
+.card-header {
+  margin-bottom: 16px;
+}
+
+.card-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 8px 0;
+}
+
+.card-skill {
+  display: inline-block;
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.card-interests {
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.card-status {
+  display: inline-block;
+  background: #fef3c7;
+  color: #d97706;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.card-actions {
+  margin-top: auto;
+  display: flex;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.btn {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-block;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-accept {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-accept:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-reject {
+  background: white;
+  color: #dc2626;
+  border: 1px solid #dc2626;
+}
+
+.btn-reject:hover {
+  background: #fef2f2;
+  transform: translateY(-1px);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: #64748b;
+  font-size: 1.125rem;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.badge {
+  display: inline-block;
+  background: #2563eb;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+@media (max-width: 768px) {
+  .connections-container {
+    padding: 24px 16px;
+  }
+
+  .tabs {
+    gap: 4px;
+  }
+
+  .tab {
+    padding: 10px 16px;
+    font-size: 0.875rem;
+  }
+
+  .connections-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+    </style>
 </head>
 <body>
-    <h2>Incoming Requests</h2>
-    {% if incoming %}
-      {% for r in incoming %}
-      <div class="item">
-        <strong>{{r[1] }}</strong> - {{r[2]}}
-    
-    <form method="post" action="/connections/accept" style="display: inline;">
-        <input type="hidden" name="request_id" value="{{r[0]}}">
-        <button type="submit">Accept</button>
-    </form>
-
-    <form method="post" action="/connections/reject" style="display: inline;">
-        <input type="hidden" name="request_id" value="{{r[0]}}">
-        <button type="submit">Reject</button>
-    </form>
-</div>
-{% endfor %}
-{% else %}
-  <p>No incoming Requests</p>
-
-{% endif %}
-
-<h2>Sent Requests</h2>
-
-{% if sent %}
-  {% for r in sent %}
-   <div class="item">
-    {{ r[1]}} - <em>Pending</em>
-   </div>
-   {% endfor %}
- {% else %}
-  <p>NO sent Requests</p>
-  {% endif %}
-
-<h2>My Connections</h2>
-
-{% if accepted %}
-  {% for c in accepted %}
-    <div class="item">
-      <strong>{{ c[1] }}</strong> — {{ c[2] }}
+    <div class="header">
+        <h2>Your <span>Connections</span></h2>
+        <div class="nav-actions">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
     </div>
-  {% endfor %}
-{% else %}
-  <p>No connections yet</p>
-{% endif %}
 
+    <div class="connections-container">
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('incoming')">
+                Incoming Requests
+                {% if incoming %}<span class="badge">{{ incoming|length }}</span>{% endif %}
+            </button>
+            <button class="tab" onclick="showTab('sent')">
+                Sent Requests
+                {% if sent %}<span class="badge">{{ sent|length }}</span>{% endif %}
+            </button>
+            <button class="tab" onclick="showTab('connections')">
+                My Connections
+                {% if accepted %}<span class="badge">{{ accepted|length }}</span>{% endif %}
+            </button>
+        </div>
 
+        <!-- Incoming Requests Tab -->
+        <div id="incoming" class="tab-content active">
+            {% if incoming %}
+            <div class="connections-grid">
+                {% for r in incoming %}
+                <div class="connection-card">
+                    <div class="card-header">
+                        <h3 class="card-name">{{ r[1] }}</h3>
+                        <span class="card-skill">{{ r[2] }}</span>
+                        {% if r[3] %}
+                        <p class="card-interests">{{ r[3] }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="card-actions">
+                        <form method="post" action="/connections/accept" style="flex: 1; margin: 0;">
+                            <input type="hidden" name="request_id" value="{{ r[0] }}">
+                            <button type="submit" class="btn btn-accept">Accept</button>
+                        </form>
+                        <form method="post" action="/connections/reject" style="flex: 1; margin: 0;">
+                            <input type="hidden" name="request_id" value="{{ r[0] }}">
+                            <button type="submit" class="btn btn-reject">Reject</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">📬</div>
+                <p>No incoming requests</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sent Requests Tab -->
+        <div id="sent" class="tab-content">
+            {% if sent %}
+            <div class="connections-grid">
+                {% for r in sent %}
+                <div class="connection-card">
+                    <div class="card-header">
+                        <h3 class="card-name">{{ r[1] }}</h3>
+                        <span class="card-status">Pending</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">📤</div>
+                <p>No sent requests</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- My Connections Tab -->
+        <div id="connections" class="tab-content">
+            {% if accepted %}
+            <div class="connections-grid">
+                {% for c in accepted %}
+                <div class="connection-card">
+                    <div class="card-header">
+                        <h3 class="card-name">{{ c[1] }}</h3>
+                        <span class="card-skill">{{ c[2] }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">👥</div>
+                <p>No connections yet</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+    </script>
 </body>
 </html>
