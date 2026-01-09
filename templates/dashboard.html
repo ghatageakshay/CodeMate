@@ -2,189 +2,261 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard-CodeMate</title>
-    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
-    <style>
-body {
-  margin: 0;
-  background: #f9fafb;
-  color: #0f172a;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard-CodeMate</title>
+  <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+  <style>
+    body {
+      margin: 0;
+      background: #f9fafb;
+      color: #0f172a;
+    }
 
-.header {
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 16px 24px;
+    .header {
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #0f172a;
+    }
+
+    .header h2 span {
+      color: #2563eb;
+    }
+
+    .header .nav-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .header .nav-actions a {
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .header .nav-actions a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 24px 32px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 1.3rem;
+      color: #2563eb;
+    }
+
+    .card p {
+      margin: 0;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .matches-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 40px;
+    }
+
+    .matches-container h3 {
+      margin: 0 0 24px;
+      font-size: 1.5rem;
+      color: #2563eb;
+    }
+
+    .matches-container ul {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .matches-container li {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      color: #0f172a;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .matches-container li:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.1);
+      border-color: #2563eb;
+    }
+
+    .matches-container p {
+      color: #64748b;
+      font-size: 1rem;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .dev-topics {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.header h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #0f172a;
-}
-
-.header h2 span {
-  color: #2563eb;
-}
-
-.header .nav-actions {
-  display: flex;
+  flex-direction: column;
   gap: 16px;
-  align-items: center;
 }
 
-.header .nav-actions a {
+.dev-topic {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.dev-topic:last-child {
+  border-bottom: none;
+}
+
+.topic-title {
+  font-weight: 600;
   color: #2563eb;
   text-decoration: none;
-  font-size: 1rem;
+  display: block;
+  margin-bottom: 6px;
 }
 
-.header .nav-actions a:hover {
+.topic-title:hover {
   text-decoration: underline;
 }
 
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 40px 24px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.card {
-  background: white;
-  border: 1px solid #e5e7eb;
+.tag {
+  background: #eef2ff;
+  color: #4338ca;
+  font-size: 12px;
+  padding: 3px 8px;
   border-radius: 12px;
-  padding: 24px 32px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
-}
 
-.card h3 {
-  margin: 0 0 12px;
-  font-size: 1.3rem;
-  color: #2563eb;
-}
-
-.card p {
-  margin: 0;
-  color: #64748b;
-  line-height: 1.6;
-}
-
-.matches-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 24px 40px;
-}
-
-.matches-container h3 {
-  margin: 0 0 24px;
-  font-size: 1.5rem;
-  color: #2563eb;
-}
-
-.matches-container ul {
-  list-style: none;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.matches-container li {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-  color: #0f172a;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.matches-container li:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.1);
-  border-color: #2563eb;
-}
-
-.matches-container p {
-  color: #64748b;
-  font-size: 1rem;
-  text-align: center;
-  padding: 40px;
-}
-</style>
+    
+  </style>
 
 
 <body>
 
- 
 
-    <div class="header">
-        <h2>Welcome, <span>{{name}}</span></h2>
-        <div class="nav-actions">
-            <a href="/connections">Your Connections</a>
-            <a href="/profile">Profile</a>
-            <a href="/logout">Logout</a>
-        </div>
+
+  <div class="header">
+    <h2>Welcome, <span>{{name}}</span></h2>
+    <div class="nav-actions">
+      <a href="/connections">Your Connections</a>
+      <a href="/profile">Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h3>Match Suggestions</h3>
+      <p>developers with similar intrests will appear here.</p>
     </div>
 
-    <div class="container">
-        <div class="card">
-            <h3>Match Suggestions</h3>
-            <p>developers with similar intrests will appear here.</p>
-        </div>
 
+  <div class="card">
+  <h3>Trending DEV Topics</h3>
 
-        <div class="card">
-            <h3>Forum Highlights</h3>
-            <p>Trending discussions from your favorite topics.</p>
-        </div>
+  {% if articles %}
+    <div class="dev-topics">
+      {% for article in articles %}
+        <div class="dev-topic">
+          <a href="{{ article.url }}" target="_blank" class="topic-title">
+            {{ article.title }}
+          </a>
 
-        <div class="card">
-            <h3>Mentor Requests</h3>
-            <p>Avialable Mentors you can reach out to.</p>
+          <div class="tags">
+            {% for tag in article.tag_list %}
+              <span class="tag">#{{ tag }}</span>
+            {% endfor %}
+          </div>
         </div>
+      {% endfor %}
     </div>
-    <div class="matches-container">
-  {% if matches %}
+  {% else %}
+    <p>No trending topics right now.</p>
+  {% endif %}
+</div>
+
+
+    <div class="card">
+      <h3>Mentor Requests</h3>
+      <p>Avialable Mentors you can reach out to.</p>
+    </div>
+  </div>
   <div class="matches-container">
-    <h3>Match Suggestions</h3>
-    <ul>
-      {% for m in matches %}
+    {% if matches %}
+    <div class="matches-container">
+      <h3>Match Suggestions</h3>
+      <ul>
+        {% for m in matches %}
         <li>
           <strong>{{ m.name }}</strong> — {{ m.skill }}
           <br>
           <small>Common interests: {{ ", ".join(m.common_interests) }}</small>
-      
-        <form method="post" action="/connect" style="margin-top:10px;">
-          <input type="hidden" name="receiver_id" value="{{m.id}}">
-          <button type="submit">connect</button>
-        </form>
-          </li>
-      {% endfor %}
-    </ul>
-  </div>
-{% else %}
-  <div class="matches-container">
-    <p>No matches yet. Invite friends!</p>
-  </div>
-{% endif %}
+
+          {% if m.status == "none" %}
+          <form method="post" action="/connect" style="margin-top:10px;">
+            <input type="hidden" name="receiver_id" value="{{ m.id }}">
+            <button type="submit">Connect</button>
+          </form>
+
+          {% elif m.status == "pending" %}
+          <span style="color: gray; font-size: 14px;">Request Sent</span>
+
+          {% elif m.status == "accepted" %}
+          <span style="color: green; font-size: 14px;">Connected</span>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% else %}
+    <div class="matches-container">
+      <p>No matches yet. Invite friends!</p>
+    </div>
+    {% endif %}
 
 
 </body>

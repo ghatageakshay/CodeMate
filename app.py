@@ -2,7 +2,7 @@ from flask import Flask,render_template,request,redirect,session,url_for,send_fr
 import sqlite3
 import os
 from werkzeug.security import generate_password_hash,check_password_hash
-
+import requests
 from init_db import init_db
 
 app=Flask(__name__)
@@ -36,6 +36,38 @@ init_db("database.db")
 def get_db():
     return sqlite3.connect("database.db")
 
+def connection_status(user_id,other_id):
+    conn=get_db()
+    cursor=conn.cursor()
+
+    cursor.execute("""
+       
+      select status 
+                   from connections
+                   where(sender_id=? AND receiver_id=?)
+                   or (sender_id=? and receiver_id=?)
+                LIMIT 1
+""",(user_id,other_id,other_id,user_id))
+    
+    row=cursor.fetchone()
+    conn.close()
+
+    if not row:
+        return "none"
+    
+    return row[0]
+
+def get_trending_articles():
+    url="https://dev.to/api/articles?top=1&per_page=3"
+
+    try:
+        response=requests.get(url,timeout=5)
+        response.raise_for_status()
+        return response.json()
+    
+    except Exception:
+        return []
+
 def get_matches(user_id):
     conn=get_db()
     cursor=conn.cursor()
@@ -67,13 +99,15 @@ def get_matches(user_id):
         other_interest_set=set(i.strip().lower() for i in interests.split(","))
 
         common=interest_set & other_interest_set #intersection
+        status=connection_status(user_id,uid)
 
         if common:
             matches.append({
                 "id":uid,
                 "name":name,
                 "skill":skill,
-                "common_interests":list(common)
+                "common_interests":list(common),
+                "status":status
             })
     conn.close()
 
@@ -171,8 +205,10 @@ def dashboard():
     user_id=session["user_id"]
     matches=get_matches(user_id)
     # print("matches",matches)
+
+    articles=get_trending_articles()
     
-    return render_template("dashboard.html",name=session["user_name"],matches=matches)
+    return render_template("dashboard.html",name=session["user_name"],matches=matches,articles=articles)
 
 @app.route("/logout")
 def logout():
