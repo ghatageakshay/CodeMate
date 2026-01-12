@@ -6,7 +6,7 @@ import requests
 from init_db import init_db
 
 app=Flask(__name__)
-app.secret_key="super-secret-key-change-this"
+app.secret_key=os.environ.get("SECRET_KEY","dev-fallback-key")
 
 CS_FIELDS = [
     "Frontend",
@@ -400,5 +400,5 @@ def connections():
         sent=sent,
         accepted=accepted
     )
-if __name__=="__main__":
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
