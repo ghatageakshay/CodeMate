@@ -162,6 +162,21 @@ body {
     text-align: center;
   }
 }
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    background: #eff6ff;
+    color: #2563eb;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
 </style>
 </head>
 <body>
@@ -190,9 +205,18 @@ body {
                     <span class="info-value skill-level">{{user[2]}}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Interests</span>
-                    <span class="info-value interests">{{user[3]}}</span>
+                  <span class="info-label"> Interests</span>
+                    <div class="tags-container">
+
+                  {% for interest in user[3].split(",")%}
+
+              <span class="tag">{{interest.strip() }}</span>
+
+               {% endfor %}
+               </div>
+                 
                 </div>
+         
             </div>
             <div class="actions">
                 <a href="/profile/edit" class="btn btn-primary">Edit Profile</a>

@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect,session,url_for,send_from_directory
+from flask import Flask,render_template,request,redirect,session,url_for,send_from_directory,jsonify
 import sqlite3
 import os
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -190,10 +190,10 @@ def login():
                 session["user_id"]=user_id
                 session["user_name"]=name
             
-            return redirect("/dashboard")
+                return redirect("/dashboard")
         
-        else:
-            return render_template("login.html",error="Invalid email or password")
+            else:
+                return render_template("login.html",error="Invalid email or password")
         
     return render_template("login.html")
 
@@ -225,7 +225,7 @@ def profile():
     cursor=conn.cursor()
     cursor.execute("select name,email,skill_level,interests FROM users WHERE id=?",(user_id,))
     user=cursor.fetchone()
-    
+    conn.close()
     return render_template("profile.html",user=user)
 
 @app.route("/profile/edit",methods=["GET","POST"])
@@ -400,5 +400,41 @@ def connections():
         sent=sent,
         accepted=accepted
     )
+
+@app.route("/api/users")
+def api_users():
+    if "user_id" not in session:
+        return jsonify({"error":"unautorized"}),401
+
+    user_id=session["user_id"]
+    conn=get_db()
+    curor=conn.cursor()
+
+    curor.execute("""
+        select id,name,skill_level,interests
+                  from users
+                  where id !=?
+ """,(user_id,))
+
+    rows=curor.fetchall()
+    conn.close()
+
+    users=[]
+    for row in rows:
+        users.append({
+            "id":row[0],
+            "name":row[1],
+            "skill_level":row[2],
+            "interests":row[3]
+        })
+
+    return jsonify(users)
+
+@app.route("/find_devs")
+def find_devs():
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    return render_template("find_devs.html")
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

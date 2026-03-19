@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+</head>
+<style>
+    body {
+    margin: 0;
+    background: #f9fafb;
+    color: #0f172a;
+}
+
+.search-wrapper {
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 0 24px;
+}
+
+#search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+}
+
+#search-input:focus {
+    border-color: #2563eb;
+}
+
+#dev-cards-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    border-color: #2563eb;
+}
+
+.card h3 {
+    margin: 0 0 8px;
+    font-size: 1.25rem;
+    color: #0f172a;
+}
+
+.card p {
+    margin: 4px 0;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+</style>
+<body>
+    <div class="header">
+        <h2>Find<span>Devs</span></h2>
+       <div class="nav-actions">
+        <a href="/dashboard">Dashboard</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout">Logout</a>
+            </div>
+              </div>
+              <div class="search-wrapper">
+    <input type="search" id="search-input" placeholder="find devlopers">
+    </div>
+    <div id="dev-cards-container">
+
+    </div>
+    <script>
+        const container=document.getElementById("dev-cards-container")
+
+        fetch("/api/users")
+            .then(res=>res.json())
+            .then(users=>{
+
+                users.forEach(user=>{
+                    container.innerHTML+=`
+                        <div class="card">
+                            <h3>${user.name}</h3>
+                            <p>${user.skill_level}</p>
+                            <p>${user.interests}</p>
+                        </div>  
+                    `
+                })
+            })
+    </script>
+</body>
+</html>
