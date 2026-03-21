@@ -83,22 +83,43 @@
 
     </div>
     <script>
-        const container=document.getElementById("dev-cards-container")
+let allUsers = []
+const container = document.getElementById("dev-cards-container")
 
-        fetch("/api/users")
-            .then(res=>res.json())
-            .then(users=>{
+// Step 1 - draw cards from whatever array is passed
+function renderCards(users) {
+    container.innerHTML = ""
+    users.forEach(user => {
+        container.innerHTML += `
+            <div class="card">
+                <h3>${user.name}</h3>
+                <p>${user.skill_level}</p>
+                <p>${user.interests}</p>
+                <form method="post" action="/connect">
+                    <input type="hidden" name="receiver_id" value="${user.id}">
+                    <button type="submit">Connect</button>
+                </form>
+            </div>
+        `
+    })
+}
 
-                users.forEach(user=>{
-                    container.innerHTML+=`
-                        <div class="card">
-                            <h3>${user.name}</h3>
-                            <p>${user.skill_level}</p>
-                            <p>${user.interests}</p>
-                        </div>  
-                    `
-                })
-            })
+// Step 2 - fetch users once when page loads
+fetch("/api/users")
+    .then(res => res.json())
+    .then(users => {
+        allUsers = users       // save to allUsers
+        renderCards(users)      // draw all cards
+    })
+
+// Step 3 - search filter
+document.getElementById("search-input").addEventListener("input", function() {
+    const query = this.value.toLowerCase()
+    const filtered = allUsers.filter(user => 
+        user.name.toLowerCase().includes(query)
+    )
+    renderCards(filtered)
+})
     </script>
 </body>
 </html>
