@@ -299,7 +299,7 @@ def connect():
 
     conn.close()
 
-    return redirect("/dashboard")
+    return redirect(request.referrer or "/dashboard")
 
 @app.route("/connections/accept",methods=["POST"])
 def accept_connection():
@@ -421,11 +421,13 @@ def api_users():
 
     users=[]
     for row in rows:
+        status=connection_status(user_id,row[0])
         users.append({
             "id":row[0],
             "name":row[1],
             "skill_level":row[2],
-            "interests":row[3]
+            "interests":row[3],
+            "status": status
         })
 
     return jsonify(users)

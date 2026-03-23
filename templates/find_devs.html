@@ -88,17 +88,32 @@ const container = document.getElementById("dev-cards-container")
 
 // Step 1 - draw cards from whatever array is passed
 function renderCards(users) {
+
     container.innerHTML = ""
     users.forEach(user => {
+        
+    let buttonHTML=""
+    if(user.status === "none"){
+        buttonHTML=`
+            <form method="post" action="/connect">
+                <input type="hidden" name="receiver_id" value="${user.id}">
+                <button type="submit">Connect</button>
+            </form>
+        `
+    }
+    else if(user.status === "pending"){
+        buttonHTML = `<p style="color:gray;">Request Sent</p>`
+    }
+
+    else if(user.status === "accepted"){
+        buttonHTML=`<p style="color:green;">Connected</p>`
+    }
         container.innerHTML += `
             <div class="card">
                 <h3>${user.name}</h3>
                 <p>${user.skill_level}</p>
                 <p>${user.interests}</p>
-                <form method="post" action="/connect">
-                    <input type="hidden" name="receiver_id" value="${user.id}">
-                    <button type="submit">Connect</button>
-                </form>
+                 ${buttonHTML}
             </div>
         `
     })
