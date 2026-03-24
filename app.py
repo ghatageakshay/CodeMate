@@ -207,8 +207,10 @@ def dashboard():
     # print("matches",matches)
 
     articles=get_trending_articles()
+    stats=get_dashboard_stats(user_id)
+    tip=get_dev_tip()
     
-    return render_template("dashboard.html",name=session["user_name"],matches=matches,articles=articles)
+    return render_template("dashboard.html",name=session["user_name"],matches=matches,articles=articles,stats=stats,tip=tip)
 
 @app.route("/logout")
 def logout():
@@ -438,5 +440,56 @@ def find_devs():
         return redirect("/login")
     
     return render_template("find_devs.html")
+
+def get_dashboard_stats(user_id):
+    conn=get_db()
+    cursor=conn.cursor()
+  
+  #acceppted requests
+    cursor.execute("""
+        Select count(*) from connections
+            where(sender_id=? or receiver_id=?)
+                   and status='accepted'
+
+""",(user_id,user_id))
+    total_connections=cursor.fetchone()[0]
+
+    #pending requests
+
+    cursor.execute("""
+        select count(*) from connections
+
+                   where sender_id=? or receiver_id=?
+                   and status='pending'
+                   """,(user_id,user_id))
+    pending_requests=cursor.fetchone()[0]
+
+    conn.close()
+    
+    #total matches
+    total_matches=len(get_matches(user_id))
+
+    return{
+        "total_connections":total_connections,
+        "pending_requests":pending_requests,
+        "total_matches":total_matches
+    }
+
+def get_dev_tip():
+ 
+    import random
+    TIPS = [
+        {"content": "First, solve the problem. Then, write the code.", "author": "John Johnson"},
+        {"content": "Code is like humor. When you have to explain it, it's bad.", "author": "Cory House"},
+        {"content": "Make it work, make it right, make it fast.", "author": "Kent Beck"},
+        {"content": "Always code as if the guy maintaining your code is a violent psychopath.", "author": "John Woods"},
+        {"content": "Debugging is twice as hard as writing the code in the first place.", "author": "Brian Kernighan"},
+        {"content": "Simplicity is the soul of efficiency.", "author": "Austin Freeman"},
+        {"content": "Before software can be reusable it first has to be usable.", "author": "Ralph Johnson"},
+        {"content": "The best error message is the one that never shows up.", "author": "Thomas Fuchs"},
+    ]
+    return random.choice(TIPS)
+        
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
