@@ -28,6 +28,20 @@ def init_db(db_path: str = "database.db") -> None:
                    created_at TIMESTAMP DEFAULT current_timestamp
                    );
 """)
+    
+    cursor.execute(
+        """
+    CREATE TABLE IF NOT EXISTS messages(
+            id integer primary key AUTOINCREMENT,
+            sender_id integer,
+            receiver_id integer,
+            message text,
+            sent_at TIMESTAMP DEFAULT current_timestamp,
+            FOREIGN KEY (sender_id) REFERENCES users(id),
+            FOREIGN KEY (receiver_id) REFERENCES users(id)
+    );
+"""
+    )
 
     conn.commit()
     conn.close()
