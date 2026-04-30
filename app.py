@@ -490,6 +490,80 @@ def get_dev_tip():
     ]
     return random.choice(TIPS)
         
+@app.route("/messages/<int:receiver_id>",methods=["POST"])
+def send_message(receiver_id):
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    sender_id=session["user_id"]
+    message=request.form["message"]
+
+    conn=get_db()
+    cursor=conn.cursor()
+
+    cursor.execute("""
+        INSERT into messages(sender_id,receiver_id,message)
+                   values(?,?,?)
+""",(sender_id,receiver_id,message))
+    
+    conn.commit()
+    conn.close()
+
+    return redirect(f"/messages/{receiver_id}")
+
+@app.route("/messages/<int:receiver_id>",methods=["GET"])
+def conversation(receiver_id):
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    user_id=session["user_id"]
+    conn=get_db()
+    cursor=conn.cursor()
+
+    cursor.execute("""
+        SELECT sender_id,receiver_id,message,sent_at
+                   from messages
+                   where (sender_id=? AND receiver_id=? ) or (sender_id=? AND receiver_id=?)
+                   order by sent_at ASC
+""",(user_id,receiver_id,receiver_id,user_id))
+    
+    messages=cursor.fetchall()
+    conn.close()
+
+    return render_template("conversation.html",messages=messages,receiver_id=receiver_id)
+
+@app.route("/messages")
+def inbox():
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    user_id=session["user_id"]
+    conn=get_db()
+    cursor=conn.cursor()
+
+    cursor.execute("""
+        SELECT DISTINCT
+                   CASE
+                   WHEN sender_id=? THEN receiver_id
+                   else sender_id
+                   end as other_sender_id,
+                   u.name
+                   from messages m
+                   join users u ON(
+                        case 
+                        when sender=? then receiver_id
+                        else sender_id
+                   END=u.id
+                   )
+
+                   WHERE sender_id=? OR receiver_id=?
+""",(user_id,user_id,user_id,user_id))
+    
+    conversations=cursor.fetchall()
+    conn.close()
+
+    return render_template("inbox.html",conversations=conversations)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
