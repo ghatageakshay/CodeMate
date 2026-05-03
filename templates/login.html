@@ -6,12 +6,10 @@
     <title>Login-Codemate</title>
     <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
     <style>
-        body {
+        .auth-page .auth-main {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
         }
 
         .card {
@@ -89,7 +87,15 @@
     </style>
 </head>
 
-<body>
+<body class="auth-page">
+    <header class="app-header">
+        <p class="app-header-brand"><a href="{{ url_for('home') }}">Code<span class="accent">Mate</span></a></p>
+        <nav class="app-nav" aria-label="Main">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('signup') }}">Sign up</a>
+        </nav>
+    </header>
+    <div class="auth-main">
     <div class="card">
         <h2>Login</h2>
 
@@ -104,8 +110,9 @@
         {% endif %}
 
         <div class="footer-text">
-            Don't have an account? <a href="/signup">Sign up</a>
+            Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a>
         </div>
+    </div>
     </div>
 </body>
 </html>

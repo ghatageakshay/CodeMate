@@ -12,44 +12,6 @@ body {
   color: #0f172a;
 }
 
-.header {
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 16px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.header h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #0f172a;
-}
-
-.header h2 span {
-  color: #2563eb;
-}
-
-.header .nav-actions {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.header .nav-actions a {
-  color: #2563eb;
-  text-decoration: none;
-  font-size: 1rem;
-}
-
-.header .nav-actions a:hover {
-  text-decoration: underline;
-}
-
 .edit-container {
   max-width: 700px;
   margin: 0 auto;
@@ -182,14 +144,17 @@ body {
     </style>
 </head>
 <body>
-    <div class="header">
-        <h2>Edit <span>Profile</span></h2>
-        <div class="nav-actions">
-            <a href="/profile">Profile</a>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/logout">Logout</a>
-        </div>
-    </div>
+    <header class="app-header">
+        <h2 class="app-header-brand">Edit <span class="accent">Profile</span></h2>
+        <nav class="app-nav" aria-label="Main">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('connections') }}">Connections</a>
+            <a href="{{ url_for('find_devs') }}">Find Devs</a>
+            <a href="{{ url_for('inbox') }}">Messages</a>
+            <a href="{{ url_for('profile') }}">Profile</a>
+            <a href="{{ url_for('logout') }}" class="nav-muted">Logout</a>
+        </nav>
+    </header>
 
     <div class="edit-container">
         <div class="edit-card">
@@ -234,7 +199,7 @@ body {
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Save Changes</button>
-                    <a href="/profile" class="btn btn-secondary">Cancel</a>
+                    <a href="{{ url_for('profile') }}" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>

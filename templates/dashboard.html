@@ -13,44 +13,6 @@
       color: #0f172a;
     }
 
-    .header {
-      background: white;
-      border-bottom: 1px solid #e5e7eb;
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .header h2 {
-      margin: 0;
-      font-size: 1.5rem;
-      color: #0f172a;
-    }
-
-    .header h2 span {
-      color: #2563eb;
-    }
-
-    .header .nav-actions {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-
-    .header .nav-actions a {
-      color: #2563eb;
-      text-decoration: none;
-      font-size: 1rem;
-    }
-
-    .header .nav-actions a:hover {
-      text-decoration: underline;
-    }
-
     .container {
       max-width: 1100px;
       margin: 0 auto;
@@ -206,26 +168,39 @@
     font-weight: 500;
 }
 
+.matches-container button[type="submit"] {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.matches-container button[type="submit"]:hover {
+    background: #1d4ed8;
+}
 
     
   </style>
-
+</head>
 
 <body>
 
-
-
-  <div class="header">
-    <h2>Welcome, <span>{{name}}</span></h2>
-    <div class="nav-actions">
-      
-      <a href="/connections">Your Connections</a>
-      <a href="/find_devs">Find Devs</a>
-      <a href="/profile">Profile</a>
-      <a href="/logout">Logout</a>
-
-    </div>
-  </div>
+  <header class="app-header">
+    <h2 class="app-header-brand">Welcome, <span class="accent">{{ name }}</span></h2>
+    <nav class="app-nav" aria-label="Main">
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('connections') }}">Connections</a>
+      <a href="{{ url_for('find_devs') }}">Find Devs</a>
+      <a href="{{ url_for('inbox') }}">Messages</a>
+      <a href="{{ url_for('profile') }}">Profile</a>
+      <a href="{{ url_for('logout') }}" class="nav-muted">Logout</a>
+    </nav>
+  </header>
 <div class="stats-bar">
   <div class="stat-card">
     <h3>{{stats.total_connections}}</h3>
@@ -283,7 +258,6 @@
   </div>
   <div class="matches-container">
     {% if matches %}
-    <div class="matches-container">
       <h3>Match Suggestions</h3>
       <ul>
         {% for m in matches %}
@@ -293,7 +267,7 @@
           <small>Common interests: {{ ", ".join(m.common_interests) }}</small>
 
           {% if m.status == "none" %}
-          <form method="post" action="/connect" style="margin-top:10px;">
+          <form method="post" action="{{ url_for('connect') }}">
             <input type="hidden" name="receiver_id" value="{{ m.id }}">
             <button type="submit">Connect</button>
           </form>
@@ -303,17 +277,15 @@
 
           {% elif m.status == "accepted" %}
           <span style="color: green; font-size: 14px;">Connected</span>
+          <a href="{{ url_for('conversation', receiver_id=m.id) }}" style="font-size: 14px; margin-left: 8px; color: #2563eb;">Message</a>
           {% endif %}
         </li>
         {% endfor %}
       </ul>
-    </div>
     {% else %}
-    <div class="matches-container">
       <p>No matches yet. Invite friends!</p>
-    </div>
     {% endif %}
-
+  </div>
 
 </body>
 

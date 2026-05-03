@@ -35,6 +35,7 @@ body {
   font-size: 1.5rem;
   font-weight: 700;
   color: #0f172a;
+  text-decoration: none;
 }
 
 .logo span {
@@ -151,6 +152,123 @@ body {
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 
+.features {
+  padding: 80px 24px;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.features-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.features-header {
+  text-align: center;
+  margin-bottom: 48px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.features-header h2 {
+  font-size: 2.5rem;
+  color: #0f172a;
+  margin: 0 0 16px 0;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.features-header h2 span {
+  color: #2563eb;
+}
+
+.features-header p {
+  font-size: 1.125rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.feature-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 28px 24px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.12);
+  border-color: #bfdbfe;
+}
+
+.feature-icon {
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.feature-card h3 {
+  font-size: 1.2rem;
+  color: #0f172a;
+  margin: 0;
+  font-weight: 600;
+}
+
+.feature-card p {
+  color: #64748b;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.features-cta {
+  text-align: center;
+  margin-top: 48px;
+}
+
+.features-cta p {
+  margin: 0 0 16px;
+  font-size: 1.05rem;
+  color: #475569;
+}
+
+.features-cta .btn-primary {
+  margin: 0 8px 8px 0;
+}
+
+.features-cta .btn-ghost {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #2563eb;
+  border: 2px solid #2563eb;
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.features-cta .btn-ghost:hover {
+  background: #eff6ff;
+  transform: translateY(-2px);
+}
+
 .steps {
   padding: 80px 24px;
   background: white;
@@ -234,6 +352,56 @@ body {
   margin: 0;
 }
 
+.site-footer {
+  background: #0f172a;
+  color: #94a3b8;
+  padding: 48px 24px 40px;
+  text-align: center;
+  margin-top: 0;
+}
+
+.site-footer-inner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.site-footer-title {
+  color: #f1f5f9;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 16px;
+}
+
+.site-footer-name {
+  color: #f8fafc;
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.site-footer-email {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.site-footer-email a {
+  color: #93c5fd;
+  text-decoration: none;
+}
+
+.site-footer-email a:hover {
+  text-decoration: underline;
+  color: #bfdbfe;
+}
+
+.site-footer-note {
+  margin: 24px 0 0;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
 @media (max-width: 968px) {
   .hero-container {
     grid-template-columns: 1fr;
@@ -247,6 +415,14 @@ body {
 
   .steps-grid {
     grid-template-columns: 1fr;
+  }
+
+  .features-header h2 {
+    font-size: 2rem;
+  }
+
+  .features {
+    padding: 60px 24px;
   }
 }
 
@@ -280,16 +456,30 @@ body {
   .steps-header h2 {
     font-size: 2rem;
   }
+
+  .features-header h2 {
+    font-size: 1.75rem;
+  }
+
+  .features-cta .btn-primary,
+  .features-cta .btn-ghost {
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
 }
     </style>
 </head>
 <body>
     <header class="navbar">
         <div class="nav-container">
-            <div class="logo">Code<span>Mate</span></div>
+            <a href="{{ url_for('home') }}" class="logo">Code<span>Mate</span></a>
             <div class="nav-actions">
-                <a href="/login">Log In</a>
-                <a href="/signup" class="btn-primary">Sign Up</a>
+                <a href="{{ url_for('login') }}">Log In</a>
+                <a href="{{ url_for('signup') }}" class="btn-primary">Sign Up</a>
             </div>
         </div>
     </header>
@@ -300,11 +490,57 @@ body {
                 <h1>Find your perfect <span>coding partner</span></h1>
                 <p>Connect with developers who share your interests and build amazing projects together. Join a community of passionate coders ready to collaborate.</p>
                 <div class="hero-cta">
-                    <a href="/signup" class="btn-primary">Get Started</a>
+                    <a href="{{ url_for('signup') }}" class="btn-primary">Get Started</a>
                 </div>
             </div>
             <div class="hero-image">
-                <img src="/images/homepage.png" alt="CodeMate Collaboration">
+                <img src="{{ url_for('serve_image', filename='homepage.png') }}" alt="CodeMate Collaboration">
+            </div>
+        </div>
+    </section>
+
+    <section class="features" aria-labelledby="features-heading">
+        <div class="features-container">
+            <div class="features-header">
+                <h2 id="features-heading">What you can do on <span>CodeMate</span></h2>
+                <p>Match by interests, grow your network, and message collaborators—all in one place. Here is what is waiting for you after you sign in.</p>
+            </div>
+            <div class="features-grid">
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true">🎯</div>
+                    <h3>Smart match suggestions</h3>
+                    <p>Your dashboard highlights developers who share your interests, so you spend less time searching and more time pairing up.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true">🔍</div>
+                    <h3>Find developers</h3>
+                    <p>Browse the community, search by name, and send connection requests to people you want to learn or build with.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true">🤝</div>
+                    <h3>Connections that stick</h3>
+                    <p>Accept or manage incoming requests and see everyone you are connected with—clear status, no guesswork.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true">💬</div>
+                    <h3>Inbox and chat</h3>
+                    <p>Message people you have connected with in a simple inbox and conversation view built for quick coordination.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true">👤</div>
+                    <h3>Profile that reflects you</h3>
+                    <p>Show your skill level and interests so the right partners recognize you and reach out with relevant ideas.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon" aria-hidden="true">📰</div>
+                    <h3>Trending dev reads</h3>
+                    <p>Stay curious with hand-picked trending articles on your dashboard—fuel for your next project or study session.</p>
+                </article>
+            </div>
+            <div class="features-cta">
+                <p>Ready to meet your next coding partner?</p>
+                <a href="{{ url_for('signup') }}" class="btn-primary">Sign up free</a>
+                <a href="{{ url_for('login') }}" class="btn-ghost">Log in</a>
             </div>
         </div>
     </section>
@@ -334,5 +570,16 @@ body {
             </div>
         </div>
     </section>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <p class="site-footer-title">Contact</p>
+            <p class="site-footer-name">Akshay Praveen Ghatage</p>
+            <p class="site-footer-email">
+                <a href="mailto:ghatageakshay96@gmail.com">ghatageakshay96@gmail.com</a>
+            </p>
+            <p class="site-footer-note">Creator of CodeMate. Questions or feedback? Reach out by email.</p>
+        </div>
+    </footer>
 </body>
 </html>

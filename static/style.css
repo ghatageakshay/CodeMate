@@ -119,3 +119,140 @@ body {
     padding: 12px 20px;
     border-radius: 8px;
 }
+
+/* Authenticated pages — shared top bar */
+.app-header {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.app-header-brand {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+.app-header-brand a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.app-header-brand a:hover {
+    color: #2563eb;
+}
+
+.app-header-brand .accent {
+    color: #2563eb;
+}
+
+.app-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+}
+
+.app-nav a {
+    color: #2563eb;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.app-nav a:hover {
+    text-decoration: underline;
+}
+
+.app-nav .nav-muted {
+    color: #64748b;
+}
+
+.app-nav .nav-muted:hover {
+    color: #0f172a;
+}
+
+/* Login / signup: stack header + centered form */
+.auth-page {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background: #f9fafb;
+}
+
+.auth-page .auth-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+/* Inbox list */
+.inbox-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 24px 48px;
+}
+
+.inbox-container > h1,
+.inbox-container > h2 {
+    margin: 0 0 20px;
+    font-size: 1.35rem;
+    color: #0f172a;
+}
+
+.conversation-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.conversation-card:hover {
+    border-color: #2563eb;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.12);
+}
+
+.conversation-card a {
+    display: block;
+    padding: 16px 20px;
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.conversation-card a:hover {
+    color: #2563eb;
+}
+
+.inbox-empty {
+    text-align: center;
+    padding: 48px 24px;
+    color: #64748b;
+    background: #fff;
+    border: 1px dashed #e5e7eb;
+    border-radius: 12px;
+}
+
+.inbox-empty p {
+    margin: 0 0 8px;
+}
+
+.inbox-empty p:last-child {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+}

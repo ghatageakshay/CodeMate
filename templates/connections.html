@@ -12,44 +12,6 @@ body {
   color: #0f172a;
 }
 
-.header {
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
-  padding: 16px 24px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.header h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: #0f172a;
-}
-
-.header h2 span {
-  color: #2563eb;
-}
-
-.header .nav-actions {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.header .nav-actions a {
-  color: #2563eb;
-  text-decoration: none;
-  font-size: 1rem;
-}
-
-.header .nav-actions a:hover {
-  text-decoration: underline;
-}
-
 .connections-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -249,26 +211,29 @@ body {
     </style>
 </head>
 <body>
-    <div class="header">
-        <h2>Your <span>Connections</span></h2>
-        <div class="nav-actions">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/profile">Profile</a>
-            <a href="/logout">Logout</a>
-        </div>
-    </div>
+    <header class="app-header">
+        <h2 class="app-header-brand">Your <span class="accent">Connections</span></h2>
+        <nav class="app-nav" aria-label="Main">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('connections') }}">Connections</a>
+            <a href="{{ url_for('find_devs') }}">Find Devs</a>
+            <a href="{{ url_for('inbox') }}">Messages</a>
+            <a href="{{ url_for('profile') }}">Profile</a>
+            <a href="{{ url_for('logout') }}" class="nav-muted">Logout</a>
+        </nav>
+    </header>
 
     <div class="connections-container">
         <div class="tabs">
-            <button class="tab active" onclick="showTab('incoming')">
+            <button type="button" class="tab active" onclick="showTab(event, 'incoming')">
                 Incoming Requests
                 {% if incoming %}<span class="badge">{{ incoming|length }}</span>{% endif %}
             </button>
-            <button class="tab" onclick="showTab('sent')">
+            <button type="button" class="tab" onclick="showTab(event, 'sent')">
                 Sent Requests
                 {% if sent %}<span class="badge">{{ sent|length }}</span>{% endif %}
             </button>
-            <button class="tab" onclick="showTab('connections')">
+            <button type="button" class="tab" onclick="showTab(event, 'connections')">
                 My Connections
                 {% if accepted %}<span class="badge">{{ accepted|length }}</span>{% endif %}
             </button>
@@ -288,11 +253,11 @@ body {
                         {% endif %}
                     </div>
                     <div class="card-actions">
-                        <form method="post" action="/connections/accept" style="flex: 1; margin: 0;">
+                        <form method="post" action="{{ url_for('accept_connection') }}" style="flex: 1; margin: 0;">
                             <input type="hidden" name="request_id" value="{{ r[0] }}">
                             <button type="submit" class="btn btn-accept">Accept</button>
                         </form>
-                        <form method="post" action="/connections/reject" style="flex: 1; margin: 0;">
+                        <form method="post" action="{{ url_for('reject_connection') }}" style="flex: 1; margin: 0;">
                             <input type="hidden" name="request_id" value="{{ r[0] }}">
                             <button type="submit" class="btn btn-reject">Reject</button>
                         </form>
@@ -339,6 +304,9 @@ body {
                         <h3 class="card-name">{{ c[1] }}</h3>
                         <span class="card-skill">{{ c[2] }}</span>
                     </div>
+                    <div class="card-actions">
+                      <a href="{{ url_for('conversation', receiver_id=c[0]) }}" class="btn btn-accept">Message</a>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
@@ -352,20 +320,13 @@ body {
     </div>
 
     <script>
-        function showTab(tabName) {
-            // Hide all tab contents
+        function showTab(ev, tabName) {
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => content.classList.remove('active'));
-            
-            // Remove active class from all tabs
             const tabs = document.querySelectorAll('.tab');
             tabs.forEach(tab => tab.classList.remove('active'));
-            
-            // Show selected tab content
             document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to clicked tab
-            event.target.classList.add('active');
+            ev.currentTarget.classList.add('active');
         }
     </script>
 </body>

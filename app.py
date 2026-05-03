@@ -530,7 +530,7 @@ def conversation(receiver_id):
     messages=cursor.fetchall()
     conn.close()
 
-    return render_template("conversation.html",messages=messages,receiver_id=receiver_id)
+    return render_template("conversation.html",messages=messages,receiver_id=receiver_id,user_id=user_id)
 
 @app.route("/messages")
 def inbox():
@@ -542,22 +542,19 @@ def inbox():
     cursor=conn.cursor()
 
     cursor.execute("""
-        SELECT DISTINCT
-                   CASE
-                   WHEN sender_id=? THEN receiver_id
-                   else sender_id
-                   end as other_sender_id,
-                   u.name
-                   from messages m
-                   join users u ON(
-                        case 
-                        when sender=? then receiver_id
-                        else sender_id
-                   END=u.id
-                   )
-
-                   WHERE sender_id=? OR receiver_id=?
-""",(user_id,user_id,user_id,user_id))
+    SELECT DISTINCT
+        CASE
+            WHEN sender_id=? THEN receiver_id
+            ELSE sender_id
+        END as other_user_id,
+        u.name
+    FROM messages m
+    JOIN users u ON u.id = CASE
+        WHEN m.sender_id=? THEN m.receiver_id
+        ELSE m.sender_id
+    END
+    WHERE m.sender_id=? OR m.receiver_id=?
+""", (user_id, user_id, user_id, user_id))
     
     conversations=cursor.fetchall()
     conn.close()
@@ -566,4 +563,4 @@ def inbox():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000 , debug=True)

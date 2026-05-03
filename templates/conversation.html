@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversation - CodeMate</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+    body {
+    margin: 0;
+    background: #f9fafb;
+    color: #0f172a;
+}
+
+.chat-wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 24px 24px 0;
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 200px;
+}
+
+.message {
+    max-width: 60%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.message small {
+    display: block;
+    font-size: 0.75rem;
+    margin-top: 4px;
+    opacity: 0.6;
+}
+
+.sent {
+    background: #2563eb;
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+.received {
+    background: white;
+    color: #0f172a;
+    border: 1px solid #e5e7eb;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+.message-input {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 24px 24px;
+}
+
+.message-input form {
+    display: flex;
+    gap: 12px;
+}
+
+.message-input input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.message-input input:focus {
+    border-color: #2563eb;
+}
+
+.message-input button {
+    padding: 12px 24px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.message-input button:hover {
+    background: #1d4ed8;
+}
+</style>
+</head>
+<body>
+    <header class="app-header">
+        <h1 class="app-header-brand">Chat</h1>
+        <nav class="app-nav" aria-label="Main">
+            <a href="{{ url_for('inbox') }}">← Inbox</a>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('connections') }}">Connections</a>
+            <a href="{{ url_for('find_devs') }}">Find Devs</a>
+            <a href="{{ url_for('profile') }}">Profile</a>
+            <a href="{{ url_for('logout') }}" class="nav-muted">Logout</a>
+        </nav>
+    </header>
+
+    <div class="chat-wrap">
+        <div class="chat-container">
+            {% for m in messages %}
+                {% if m[0] == user_id %}
+                    <div class="message sent">
+                        <p>{{ m[2] }}</p>
+                        <small>{{ m[3] }}</small>
+                    </div>
+                {% else %}
+                    <div class="message received">
+                        <p>{{ m[2] }}</p>
+                        <small>{{ m[3] }}</small>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="message-input">
+        <form method="post" action="{{ url_for('send_message', receiver_id=receiver_id) }}">
+            <input type="text" name="message" placeholder="Type a message…" required autocomplete="off">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</body>
+</html>
