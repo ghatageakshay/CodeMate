@@ -43,6 +43,49 @@ def init_db(db_path: str = "database.db") -> None:
 """
     )
 
+    cursor.execute("""
+        create table if not exists rooms(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        creator_id INTEGER,
+        room_name TEXT,
+        description TEXT,
+        tech_stack TEXT,
+        status TEXT DEFAULT 'open',
+        created_at TIMESTAMP DEFAULT current_timestamp,
+        FOREIGN KEY (creator_id) REFERENCES users(id)
+                   );
+""")
+
+
+    cursor.execute("""
+        create table if not exists room_roles(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        room_id INTEGER,
+        role_name TEXT,
+        role_description TEXT,
+        skill_level TEXT,
+        total_seats INTEGER,
+        FOREIGN KEY(room_id) REFERENCES rooms(id)
+                   );
+""")
+    
+    cursor.execute("""
+            CREATE TABLE IF NOT EXISTS room_applications(
+                   id INTEGER PRIMARY KEY AUTOINCREMENT,
+                   room_id INTEGER,
+                   role_id INTEGER,
+                   applicant_id INTEGER,
+                   github TEXT,
+                   message TEXT,
+                   status TEXT default 'pending',
+                   applied_at TIMESTAMP default current_timestamp,
+                   FOREIGN KEY (room_id) REFERENCES rooms(id),
+                   FOREIGN KEY (role_id) REFERENCES room_roles(id),
+                   FOREIGN KEY (applicant_id) REFERENCES users(id)
+                   );
+""")
+ 
+
     conn.commit()
     conn.close()
 
