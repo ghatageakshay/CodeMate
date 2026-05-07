@@ -561,6 +561,30 @@ def inbox():
 
     return render_template("inbox.html",conversations=conversations)
 
+@app.route("/collab_room",methods=["GET","POST"])
+def collab_room():
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    if request.method=="POST":
+        creator_id=session["user_id"]
+        room_name=request.form["room_name"]
+        description=request.form["description"]
+        tech_stack=request.form["tech_stack"]
+        status=request.form["status"]
 
+        conn=get_db()
+        cursor=conn.cursor()
+
+        cursor.execute("""
+            INSERT INTO rooms(creator_id,room_name,description,tech_stack,status)
+                   values(?,?,?,?,?)
+        """,(creator_id,room_name,description,tech_stack,status))
+    
+        conn.commit()
+        conn.close()
+
+        return render_template("CollabRoom.html",success="Room Created Successfully!")
+    return render_template("CollabRoom.html")
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000 , debug=True)

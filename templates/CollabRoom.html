@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="Collab_room">
+        <h2>Enter your room details</h2>
+        <form method="post" action="{{url_for('collab_room')}}" enctype="multipart/form-data">
+            <label>Room Name</label>
+        <input type="text" id="room_name" name="room_name" placeholder="Enter your room name" required>
+        <label>description</label>
+        <input type="text" id="description" name="description" placeholder="Enter your room details" required>
+        <label>Tech Stack</label>
+        <input type="text" id="tech_stack" name="tech_stack" placeholder="enter the tech stack" required>
+        <label>Status</label>
+        <input type="text" id="status" name="status" placeholder="current room status">
+        
+        <button type="submit">Submit</button>
+    </form>
+    {% if success %}
+    {{ success }}
+    {% endif %}
+    </div>
+</body>
+</html>
