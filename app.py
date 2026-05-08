@@ -580,7 +580,20 @@ def collab_room():
             INSERT INTO rooms(creator_id,room_name,description,tech_stack,status)
                    values(?,?,?,?,?)
         """,(creator_id,room_name,description,tech_stack,status))
-    
+
+        room_id=cursor.lastrowid
+
+        role_name=request.form.get("role_name")
+        role_description=request.form.get("role_description")
+        skill_level=request.form.get("skill_level")
+        total_seats=request.form.get("total_seats")
+
+        cursor.execute("""
+
+            INSERT INTO room_roles(room_id,role_name,role_description,skill_level,total_seats)
+                       values(?,?,?,?,?)
+
+""",(room_id,role_name,role_description,skill_level,total_seats))
         conn.commit()
         conn.close()
 

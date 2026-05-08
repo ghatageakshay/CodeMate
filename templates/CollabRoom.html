@@ -3,26 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Collab Room</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background: #f9fafb;
+            color: #0f172a;
+            min-height: 100vh;
+        }
+
+        .collab-layout {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .side-panel,
+        .Collab_room {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+            padding: 28px;
+        }
+
+        .side-panel {
+            background: linear-gradient(145deg, #ffffff 0%, #eff6ff 100%);
+        }
+
+        .side-panel h1 {
+            margin: 0 0 12px;
+            font-size: 2rem;
+            line-height: 1.2;
+            color: #1d4ed8;
+        }
+
+        .side-panel p {
+            margin: 0 0 20px;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .highlight-list {
+            margin: 0;
+            padding-left: 18px;
+            color: #334155;
+            line-height: 1.9;
+            font-size: 0.95rem;
+        }
+
+        .Collab_room h2 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #2563eb;
+        }
+
+        .room-info {
+            margin: 0 0 18px;
+            line-height: 1.6;
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        form {
+            display: grid;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: 600;
+            margin-top: 8px;
+            font-size: 0.92rem;
+            color: #334155;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+            outline: none;
+        }
+
+        .role-entry {
+            display: grid;
+            gap: 8px;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+
+        button {
+            margin-top: 12px;
+            border: none;
+            background: #2563eb;
+            color: #ffffff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .success-message {
+            margin-top: 14px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            background: #ecfdf3;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        @media (max-width: 900px) {
+            .collab-layout {
+                grid-template-columns: 1fr;
+                padding: 24px 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="Collab_room">
-        <h2>Enter your room details</h2>
-        <form method="post" action="{{url_for('collab_room')}}" enctype="multipart/form-data">
-            <label>Room Name</label>
-        <input type="text" id="room_name" name="room_name" placeholder="Enter your room name" required>
-        <label>description</label>
-        <input type="text" id="description" name="description" placeholder="Enter your room details" required>
-        <label>Tech Stack</label>
-        <input type="text" id="tech_stack" name="tech_stack" placeholder="enter the tech stack" required>
-        <label>Status</label>
-        <input type="text" id="status" name="status" placeholder="current room status">
-        
-        <button type="submit">Submit</button>
-    </form>
-    {% if success %}
-    {{ success }}
-    {% endif %}
-    </div>
+    <main class="collab-layout">
+        <section class="side-panel">
+            <h1>Build Together</h1>
+            <p>
+                Collab Room helps you launch project-based teams quickly. Share your idea, required roles, and current status so other developers can join with confidence.
+            </p>
+            <ul class="highlight-list">
+                <li>Post your project goal in one place</li>
+                <li>List exact roles and skill levels you need</li>
+                <li>Keep your room open until all seats are filled</li>
+            </ul>
+        </section>
+
+        <section class="Collab_room">
+            <h2>Enter your room details</h2>
+            <p class="room-info">
+                Fill this form to create a collaboration room and attract the right teammates based on your project requirements.
+            </p>
+            <form method="post" action="{{url_for('collab_room')}}" enctype="multipart/form-data">
+                <label>Room Name</label>
+                <input type="text" id="room_name" name="room_name" placeholder="Enter your room name" required>
+                <label>Description</label>
+                <input type="text" id="description" name="description" placeholder="Enter your room details" required>
+                <label>Tech Stack</label>
+                <input type="text" id="tech_stack" name="tech_stack" placeholder="Enter the tech stack" required>
+
+                <label>Roles Needed</label>
+                <div class="role-entry">
+                    <input type="text" name="role_name" placeholder="Role (e.g. Frontend Developer)">
+                    <input type="text" name="role_description" placeholder="What you need?">
+                    <select name="skill_level">
+                        <option value="Begineer">Begineer</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Mentor">Mentor</option>
+                    </select>
+                    <input type="number" name="total_seats" placeholder="Spots" min="1">
+                </div>
+                <label>Status</label>
+                <input type="text" id="status" name="status" value="open" placeholder="Current room status">
+                <button type="submit">Create Room</button>
+            </form>
+            {% if success %}
+            <div class="success-message">{{ success }}</div>
+            {% endif %}
+        </section>
+    </main>
 </body>
 </html>
