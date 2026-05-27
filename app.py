@@ -599,5 +599,57 @@ def collab_room():
 
         return render_template("CollabRoom.html",success="Room Created Successfully!")
     return render_template("CollabRoom.html")
+
+@app.route("/collab_rooms")
+def browse_collab_rooms():
+        if "user_id" not in session:
+            return redirect("/login")
+        
+        conn=get_db()
+        cursor=conn.cursor()
+
+        cursor.execute("""
+
+            SELECT r.id, r.room_name , r.description, r.tech_stack,r.creator_id, u.name ,r.created_at
+                       from rooms r
+                    join users u on r.creator_id = u.id
+
+                       where r.status = 'open'
+                       order by r.created_at DESC
+""")
+        
+        rooms=cursor.fetchall()
+        conn.close
+
+        return render_template("collab_rooms.html",rooms=rooms)
+
+@app.route("/collab_room/<int:room_id>")
+def room_detail(room_id):
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    conn=get_db()
+    cursor=conn.cursor()
+
+    cursor.execute("""
+            SELECT r.id, r.room_name , r.description, r.tech_stack,r.creator_id,u.name,r.created_at,r.status
+                   FROM rooms r
+                   join users u on r.creator_id = u.id
+                   where r.id = ?
+""",(room_id,))
+    
+    room = cursor.fetchone()
+
+    cursor.execute("""
+
+        select id,role_name,role_description,skill_level,total_seats
+                   from room_roles
+                   where room_id=?
+""",(room_id,))
+    
+    roles = cursor.fetchall()
+    conn.close()
+
+    return render_template("room_details.html",room=room , roles=roles, user_id=session["user_id"])
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000 , debug=True)

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collab Rooms - CodeMate</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <style>
+        body {
+            margin: 0;
+            background: #f9fafb;
+            color: #0f172a;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #0f172a;
+        }
+
+        .header h2 span {
+            color: #2563eb;
+        }
+
+        .header .nav-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .header .nav-actions a {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .header .nav-actions a:hover {
+            text-decoration: underline;
+        }
+
+        .rooms-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .rooms-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .rooms-header h1 {
+            margin: 0;
+            font-size: 2rem;
+            color: #2563eb;
+        }
+
+        .create-btn {
+            background: #2563eb;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .create-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .rooms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        .room-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .room-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+            border-color: #2563eb;
+        }
+
+        .room-card h3 {
+            margin: 0 0 12px;
+            font-size: 1.3rem;
+            color: #0f172a;
+        }
+
+        .room-card p {
+            margin: 0 0 12px;
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .room-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 12px 0;
+            padding: 12px 0;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .room-creator {
+            font-size: 0.875rem;
+            color: #2563eb;
+            font-weight: 500;
+        }
+
+        .room-date {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .tech-tag {
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .room-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-view {
+            flex: 1;
+            padding: 10px 16px;
+            background: #2563eb;
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-view:hover {
+            background: #1d4ed8;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #64748b;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .rooms-container {
+                padding: 24px 16px;
+            }
+
+            .rooms-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .rooms-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Collab <span>Rooms</span></h2>
+        <div class="nav-actions">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/messages">Messages</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="rooms-container">
+        <div class="rooms-header">
+            <h1>Open Collab Rooms</h1>
+            <a href="/collab_room" class="create-btn">+ Create Room</a>
+        </div>
+
+        {% if rooms %}
+            <div class="rooms-grid">
+                {% for r in rooms %}
+                <div class="room-card">
+                    <h3>{{ r[1] }}</h3>
+                    <p>{{ r[2][:100] }}{% if r[2]|length > 100 %}...{% endif %}</p>
+                    
+                    <div class="tech-tags">
+                        {% for tech in r[3].split(',') %}
+                            <span class="tech-tag">{{ tech.strip() }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="room-meta">
+                        <span class="room-creator">👤 {{ r[5] }}</span>
+                        <span class="room-date">{{ r[6] }}</span>
+                    </div>
+
+                    <div class="room-actions">
+                        <a href="/collab_room/{{ r[0] }}" class="btn-view">View Room</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">🚀</div>
+                <p>No collab rooms yet. Be the first to create one!</p>
+                <a href="/collab_room" class="create-btn">Create Room</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
