@@ -1,111 +1,159 @@
  🚀 CodeMate
 
-CodeMate is an early-stage **developer collaboration platform** built to help students and beginner developers find like-minded people to work with on programming projects.
+CodeMate is a developer collaboration platform built to help students and beginner developers find teammates and build projects together.
 
-The core idea behind CodeMate is simple:
+The core idea is simple:
 
-> *Many developers have ideas but struggle to find the right people to build with.*
+> Many developers have ideas but struggle to find the right people to build with.
 
-CodeMate aims to bridge that gap by enabling users to create profiles, select interests, discover similar developers, and connect with them.
-
-
-
- ✨ Features (MVP-1)
-
-The current version of CodeMate focuses on validating the core idea and user flow.
-
- 🔐 Authentication
-
-* User signup and login
-* Session-based authentication
-* Secure password handling
-
-👤 User Profiles
-
-* Name, skill level, and interests
-* Edit profile functionality
-
- 🧩 Interest-Based Matching
-
-* Users select multiple computer science domains
-* Matching is based on common interests
-* Suggestions shown on the dashboard
-
- 🤝 Connections System
-
-* Send connection requests
-* Accept incoming requests
-* View connected developers
-
- 📰 Developer Content
-
-* Displays trending developer articles using a public API (DEV.to)
-* Keeps the dashboard active and informative
-
- 🌐 Deployment
-
-* Deployed to production using **Render**
-* Fully accessible via a public URL
+CodeMate bridges that gap by enabling users to create profiles, discover similar developers, connect with them, and collaborate on projects in structured "Collab Rooms."
 
 ---
 
- 🛠 Tech Stack
+   ✨ Features (V2)
 
-* **Backend:** Python (Flask)
-* **Frontend:** HTML, CSS (Jinja templates)
-* **Database:** SQLite
-* **Deployment:** Render
-* **External API:** DEV.to public API
+    🔐 Authentication
+ User signup and login with secure password hashing
+ Session-based authentication on all protected routes
 
----
+    👤 User Profiles
+ Name, skill level (Beginner/Intermediate/Mentor), and interests
+ Interest tags displayed as clean badges
+ Edit profile functionality
 
- 📌 Project Status
+    🧩 Smart Matching Algorithm
+ Users select from 14 CS domains (Frontend, Backend, AI/ML, etc.)
+ Matching uses set intersection to find common interests
+ Dashboard displays personalized match suggestions with connection status
 
-This project is currently at **MVP-1 (Minimum Viable Product)** stage.
+    🤝 Connection System
+ Send connection requests to matched developers
+ Accept/reject incoming requests
+ View all connections in organized tabs (Incoming, Sent, Connected)
+ Real-time status updates across the platform
 
-The focus so far has been:
+    🔍 Find Devs Page
+ Browse all developers with real-time search
+ Filter by name without page reload using REST API
+ Smart connect buttons showing current connection status
+ Built on `/api/users` REST endpoint
 
-* Building complete user flows
-* Implementing core backend logic
-* Deploying a working product to production
+    💬 Direct Messaging
+ Send messages only to accepted connections
+ WhatsApp-style conversation UI (blue/grey bubbles)
+ Inbox showing all active conversations
+ Messages stored with timestamps
 
----
+    📊 Dashboard Stats
+ Real-time statistics: Total Connections, Pending Requests, Match Count
+ Daily Dev Tip of the Day (curated developer quotes)
+ Trending articles from DEV.to API
+ Match suggestions with quick connect buttons
 
- 🔮 Planned Features (MVP-2)
+    🚀 Collab Rooms
+ Create rooms with project name, description, and tech stack
+ Define roles needed (Frontend, Backend, Designer, etc.) with skill requirements
+ Dynamic role addition - add multiple roles without page reload
+ Browse public feed - see all open collab rooms
+ Room detail pages - full project info and role listings
+ Role applications - apply with GitHub link and message
+ Creator dashboard - review applications and accept/reject candidates
+ Status tracking - applications show pending/accepted/rejected status
 
-* Messaging between connected users
-* Improved matching and recommendations
-* Activity feed
-* GitHub integration
-* UI/UX enhancements
-* Migration to a persistent database (PostgreSQL)
-
----
-
- 🧠 What I Learned
-
-* Backend development with Flask
-* Working with relational databases
-* Session-based authentication
-* Handling real-world deployment issues
-* Debugging production errors
-* Integrating external APIs
-
----
-
- ⚠️ Notes
-
-* SQLite is used for MVP-1; data persistence may reset on redeploy in the free hosting tier
-* This project is intended for learning, experimentation, and early validation
-
----
-
- 📬 Feedback
-
-Feedback and suggestions are welcome.
-
-If you are a developer looking to collaborate or have ideas to improve this platform, feel free to reach out.
+    📰 Developer Content
+ Trending articles from DEV.to API
+ Keeps dashboard active and informative
 
 ---
 
-Built with curiosity, learning, and consistency.
+   🛠 Tech Stack
+
+| Component | Technology |
+|-----------|------------|
+| Backend | Python, Flask |
+| Frontend | HTML, CSS, JavaScript (Vanilla) |
+| Database | SQLite |
+| Authentication | Werkzeug (password hashing) |
+| API | REST API with JSON responses |
+| Deployment | Render |
+| External APIs | DEV.to Articles API |
+
+---
+
+   📸 Screenshots
+
+[Screenshots of major features would go here - Dashboard, Find Devs, Messaging, Collab Rooms]
+
+---
+
+   🚀 Deployment
+
+Live Demo: [Render URL]
+
+Deployed to Render with auto-deploy on GitHub push.
+
+Note: Optimized for desktop/laptop viewing (1024px+). Mobile UI improvements coming in V3.
+
+---
+
+   📌 Project Status
+
+V2 - Feature Complete
+
+V2 successfully implements the core vision: skill-based matching + project collaboration.
+
+What's working:
+ Complete user flows from signup to collab room creation
+ Real-time search and filtering
+ Messaging system for team communication
+ Structured project collaboration with role-based applications
+ Production deployment with auto-sync to GitHub
+
+---
+
+   🔮 V3 Roadmap
+
+ Persistent Database: Migrate from SQLite to PostgreSQL
+ ML Matching: Replace intersection algorithm with Cosine Similarity
+ Room Chat: Real-time messaging inside collab rooms
+ Notifications: Real-time alerts for connections, messages, applications
+ Project Board: Kanban board inside rooms (To Do → In Progress → Done)
+ Mobile Optimization: Full mobile-responsive redesign
+ Code Architecture: Refactor into Flask Blueprints for scalability
+
+---
+
+   ⚠️ Known Limitations
+
+ Database: SQLite data resets on server restart. PostgreSQL coming in V3.
+ Mobile UI: Not optimized for mobile devices. Best on desktop (1024px+).
+ Real-time Features: No WebSocket support yet. V3 will add live notifications.
+
+---
+
+   🧠 What I Built & Learned
+
+Technical Skills:
+ Full-stack Flask development (routes, sessions, databases)
+ Relational database design (6 interconnected tables)
+ REST API design and implementation
+ Session-based authentication and authorization
+ SQL queries (JOINs, CASE WHEN, aggregation with COUNT)
+ JavaScript fetch API and DOM manipulation
+ Deployment and production debugging
+
+Product Thinking:
+ User flows and UX design
+ Matching algorithms (set theory)
+ Feature prioritization and MVP planning
+ Real-world deployment challenges
+
+---
+
+   📬 Feedback
+
+Feedback and suggestions are welcome. If you're interested in the vision or want to collaborate, feel free to reach out!
+
+---
+
+Built as a solo college project with focus on learning, shipping, and iterating.
