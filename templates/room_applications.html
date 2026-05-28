@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applications - CodeMate</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+    <style>
+        body {
+            margin: 0;
+            background: #f9fafb;
+            color: #0f172a;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #0f172a;
+        }
+
+        .header h2 span {
+            color: #2563eb;
+        }
+
+        .header .nav-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .header .nav-actions a {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 24px;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+
+        h1 {
+            margin: 0 0 32px;
+            font-size: 2rem;
+            color: #2563eb;
+        }
+
+        .application-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+
+        .application-card:hover {
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-color: #2563eb;
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .app-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #0f172a;
+        }
+
+        .app-role {
+            display: inline-block;
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .app-status {
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-accepted {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .app-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            color: #0f172a;
+        }
+
+        .info-value a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .info-value a:hover {
+            text-decoration: underline;
+        }
+
+        .app-message {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            line-height: 1.6;
+            color: #475569;
+        }
+
+        .app-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-accept {
+            background: #2563eb;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-accept:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-reject {
+            background: white;
+            color: #dc2626;
+            border: 1px solid #dc2626;
+            flex: 1;
+        }
+
+        .btn-reject:hover {
+            background: #fef2f2;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 24px 16px;
+            }
+
+            .app-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Applications</h2>
+        <div class="nav-actions">
+            <a href="/collab_rooms">Back</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <a href="/collab_rooms" class="back-btn">← Back to Rooms</a>
+        <h1>Pending Applications</h1>
+
+        {% if applications %}
+            {% for app in applications %}
+            <div class="application-card">
+                <div class="app-header">
+                    <div>
+                        <h3>{{ app[4] }}</h3>
+                        <span class="app-role">{{ app[2] }}</span>
+                    </div>
+                    <span class="app-status status-{{ app[7].lower() }}">
+                        {{ app[7].capitalize() }}
+                    </span>
+                </div>
+
+                <div class="app-info">
+                    <div class="info-item">
+                        <span class="info-label">GitHub</span>
+                        <span class="info-value">
+                            <a href="{{ app[5] }}" target="_blank">View Profile →</a>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Applied</span>
+                        <span class="info-value">{{ app[8] }}</span>
+                    </div>
+                </div>
+
+                <div class="app-message">
+                    <strong>Message:</strong><br>
+                    {{ app[6] }}
+                </div>
+
+                {% if app[7] == 'pending' %}
+                <div class="app-actions">
+                    <form method="post" action="/accept_application" style="flex:1;">
+                        <input type="hidden" name="app_id" value="{{ app[0] }}">
+                        <button type="submit" class="btn btn-accept">Accept</button>
+                    </form>
+                    <form method="post" action="/reject_application" style="flex:1;">
+                        <input type="hidden" name="app_id" value="{{ app[0] }}">
+                        <button type="submit" class="btn btn-reject">Reject</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">📭</div>
+                <p>No applications yet</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -338,6 +338,14 @@
                 </div>
             </div>
 
+            {% if room[4] == user_id %}
+    <div style="margin-bottom:32px; padding:16px; background:#eff6ff; border-radius:8px; border-left:4px solid #2563eb;">
+        <a href="/room/{{ room[0] }}/applications" style="color:#2563eb; font-weight:600; text-decoration:none;">
+            👁️ View Applications ({# count pending #})
+        </a>
+    </div>
+{% endif %}
+
             <div class="room-description">
                 <h3>About This Project</h3>
                 <p>{{ room[2] }}</p>
@@ -374,7 +382,7 @@
                             <input type="hidden" name="room_id" value="{{ room[0] }}">
                             <input type="hidden" name="role_id" value="{{ role[0] }}">
                         </form>
-                        <button class="apply-btn" onclick="document.getElementById('apply-form-{{ role[0] }}').submit()">
+                       <button class="apply-btn" onclick="openApplyModal({{ role[0] }}, '{{ role[1] }}')">
                             Apply for this Role
                         </button>
                     </div>
@@ -389,5 +397,49 @@
             <p>Room not found.</p>
         {% endif %}
     </div>
+    <div id="apply-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:100; display:flex; align-items:center; justify-content:center;">
+    <div style="background:white; padding:32px; border-radius:12px; width:90%; max-width:500px;">
+        <h2 id="modal-title" style="margin:0 0 24px; color:#2563eb;">Apply for Role</h2>
+        
+        <form method="post" action="/apply_role">
+            <input type="hidden" name="room_id" value="{{ room[0] }}">
+            <input type="hidden" id="role-id" name="role_id">
+            
+            <div style="margin-bottom:20px;">
+                <label style="display:block; margin-bottom:8px; font-weight:600;">GitHub Profile</label>
+                <input type="url" name="github" placeholder="https://github.com/yourname" required 
+                       style="width:100%; padding:12px; border:1px solid #e5e7eb; border-radius:8px; font-size:1rem;">
+            </div>
+            
+            <div style="margin-bottom:20px;">
+                <label style="display:block; margin-bottom:8px; font-weight:600;">Why do you want to join?</label>
+                <textarea name="message" placeholder="Tell us about yourself and why you're interested..." required 
+                          style="width:100%; padding:12px; border:1px solid #e5e7eb; border-radius:8px; font-size:1rem; min-height:120px; font-family:inherit;"></textarea>
+            </div>
+            
+            <div style="display:flex; gap:12px;">
+                <button type="submit" style="flex:1; padding:12px; background:#2563eb; color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer;">
+                    Submit Application
+                </button>
+                <button type="button" onclick="closeApplyModal()" 
+                        style="flex:1; padding:12px; background:#f0f0f0; color:#0f172a; border:none; border-radius:8px; font-weight:600; cursor:pointer;">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openApplyModal(roleId, roleName) {
+    document.getElementById('apply-modal').style.display = 'flex';
+    document.getElementById('role-id').value = roleId;
+    document.getElementById('modal-title').textContent = 'Apply for ' + roleName;
+}
+
+function closeApplyModal() {
+    document.getElementById('apply-modal').style.display = 'none';
+}
+</script>
 </body>
 </html>

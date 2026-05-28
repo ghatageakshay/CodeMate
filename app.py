@@ -651,5 +651,115 @@ def room_detail(room_id):
     conn.close()
 
     return render_template("room_details.html",room=room , roles=roles, user_id=session["user_id"])
+
+@app.route("/apply_role",methods=["POST"])
+def apply_role():
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    applicant_id=session["user_id"]
+    room_id=request.form["room_id"]
+    role_id=request.form["role_id"]
+    github=request.form["github"]
+    message=request.form["message"]
+
+    conn=get_db()
+    cursor=conn.cursor()
+
+    cursor.execute("""
+            INSERT INTO room_applications(room_id,role_id,applicant_id,github,message)
+                   values(?,?,?,?,?)
+
+""",(room_id,role_id,applicant_id,github,message))
+    
+    conn.commit()
+    conn.close()
+
+    return redirect(f"/collab_room/{room_id}?applied=true")
+@app.route("/room/<int:room_id>/applications")
+def room_applications(room_id):
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    user_id=session["user_id"]
+    conn=get_db()
+    cursor=conn.cursor()
+
+    cursor.execute("select creator_id from rooms where id=?",(room_id,))
+    room=cursor.fetchone()
+
+    if not room or room[0] != user_id:
+        conn.close()
+        return redirect("/collab_rooms")#not creator, go back
+
+    #get all applications
+    cursor.execute("""
+        SELECT ra.id,ra.role_id,rr.role_name,ra.applicant_id,u.name,ra.github,ra.message,ra.status,ra.applied_at
+                   from room_applications ra
+                   join room_roles rr on ra.role_id=rr.id
+                   join users u on ra.applicant_id = u.id
+                   where rr.room_id=?
+                   order by ra.applied_at DESC
+""",(room_id,))
+    
+    applications=cursor.fetchall()
+    conn.close()
+
+    return render_template("room_applications.html",room_id=room_id,applications=applications)
+@app.route("/accept_application",methods=["POST"])
+def accept_applications():
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    app_id=request.form["app_id"]
+
+    conn=get_db()
+    cursor=conn.cursor()
+
+    cursor.execute("""
+        SELECT room_id FROM room_applications WHERE id = ?
+    """, (app_id,))
+    
+    result = cursor.fetchone()
+    room_id = result[0] if result else None
+    cursor.execute("""
+
+            UPDATE room_applications
+                   set status = 'accepted'
+                   where id = ?
+""",(app_id,))
+    
+    conn.commit()
+    conn.close()
+
+    return redirect(f"/room/{room_id}/applications")
+
+@app.route("/reject_application",methods=["POST"])
+def reject_applications():
+    if "user_id" not in session:
+        return redirect("/login")
+    
+    app_id=request.form["app_id"]
+
+    conn=get_db()
+    cursor=conn.cursor() 
+
+    cursor.execute("""
+        SELECT room_id FROM room_applications WHERE id = ?
+    """, (app_id,))
+    
+    result = cursor.fetchone()
+    room_id = result[0] if result else None
+
+    cursor.execute("""
+        UPDATE room_applications
+                   set status = 'rejected'
+                   where id = ?
+""",(app_id,))
+    
+    conn.commit()
+    conn.close()
+
+    return redirect(f"/room/{room_id}/applications")
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000 , debug=True)
