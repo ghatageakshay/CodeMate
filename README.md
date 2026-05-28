@@ -78,13 +78,6 @@ CodeMate bridges that gap by enabling users to create profiles, discover similar
 | Deployment | Render |
 | External APIs | DEV.to Articles API |
 
----
-
-   📸 Screenshots
-
-
-
----
 
    🚀 Deployment
 
