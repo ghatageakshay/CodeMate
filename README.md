@@ -82,13 +82,13 @@ CodeMate bridges that gap by enabling users to create profiles, discover similar
 
    📸 Screenshots
 
-[Screenshots of major features would go here - Dashboard, Find Devs, Messaging, Collab Rooms]
+
 
 ---
 
    🚀 Deployment
 
-Live Demo: [Render URL]
+Live Demo: https://lnkd.in/dSAxMUpS
 
 Deployed to Render with auto-deploy on GitHub push.
 
