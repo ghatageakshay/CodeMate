@@ -88,7 +88,7 @@ CodeMate bridges that gap by enabling users to create profiles, discover similar
 
    🚀 Deployment
 
-Live Demo: https://lnkd.in/dSAxMUpS
+Live Demo: https://codemate-rz34.onrender.com
 
 Deployed to Render with auto-deploy on GitHub push.
 
