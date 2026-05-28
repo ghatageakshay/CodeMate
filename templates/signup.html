@@ -72,6 +72,18 @@
             font-size: 1.75rem;
         }
 
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
         input, select {
             width: 100%;
             padding: 12px;
@@ -193,6 +205,17 @@
             <a href="{{ url_for('login') }}">Log in</a>
         </nav>
     </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-stack">
+        {% for category, message in messages %}
+        <div class="flash-message {% if category == 'error' %}flash-error{% elif category == 'success' %}flash-success{% else %}flash-info{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
     <div class="auth-main">
     <div class="wrapper">
 
@@ -215,17 +238,22 @@
         <!-- Signup card -->
         <div class="card">
             <h2>Signup</h2>
+            <a href="{{ url_for('home') }}" class="back-link">← Back to home</a>
             <form method="post">
-                <input name="name" placeholder="Name" required>
-                <input name="email" placeholder="Email" required>
-                <input name="password" type="password" placeholder="Password" required>
-                <select name="skill_level">
+                <label class="form-label" for="name">Name <span class="required">*</span></label>
+                <input id="name" name="name" placeholder="Your full name" required>
+                <label class="form-label" for="email">Email <span class="required">*</span></label>
+                <input id="email" name="email" type="email" placeholder="you@example.com" required>
+                <label class="form-label" for="password">Password <span class="required">*</span></label>
+                <input id="password" name="password" type="password" placeholder="At least 6 characters" required minlength="6">
+                <label class="form-label" for="skill_level">Skill level <span class="required">*</span></label>
+                <select id="skill_level" name="skill_level" required>
                     <option value="Beginner">Beginner</option>
                     <option value="Intermediate">Intermediate</option>
                     <option value="Mentor">Mentor</option>
                 </select>
                 <div class="interests-container">
-                    <label class="interests-label">Select your interests:</label>
+                    <label class="interests-label">Select your interests <span class="required">*</span>:</label>
                     <div class="interests-grid">
                         {% for field in fields %}
                         <div class="checkbox-item">

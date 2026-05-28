@@ -12,44 +12,6 @@
             color: #0f172a;
         }
 
-        .header {
-            background: white;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 16px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .header h2 {
-            margin: 0;
-            font-size: 1.5rem;
-            color: #0f172a;
-        }
-
-        .header h2 span {
-            color: #2563eb;
-        }
-
-        .header .nav-actions {
-            display: flex;
-            gap: 16px;
-            align-items: center;
-        }
-
-        .header .nav-actions a {
-            color: #2563eb;
-            text-decoration: none;
-            font-size: 1rem;
-        }
-
-        .header .nav-actions a:hover {
-            text-decoration: underline;
-        }
-
         .rooms-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -208,20 +170,35 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <h2>Collab <span>Rooms</span></h2>
-        <div class="nav-actions">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/messages">Messages</a>
-            <a href="/profile">Profile</a>
-            <a href="/logout">Logout</a>
+    <header class="app-header">
+        <h2 class="app-header-brand">Collab <span class="accent">Rooms</span></h2>
+        <nav class="app-nav" aria-label="Main">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('connections') }}">Connections</a>
+            <a href="{{ url_for('inbox') }}">Messages</a>
+            <a href="{{ url_for('profile') }}">Profile</a>
+            <a href="{{ url_for('logout') }}" class="nav-muted">Logout</a>
+        </nav>
+    </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-stack">
+        {% for category, message in messages %}
+        <div class="flash-message {% if category == 'error' %}flash-error{% elif category == 'success' %}flash-success{% else %}flash-info{% endif %}">
+            {{ message }}
         </div>
-    </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
 
     <div class="rooms-container">
+        <div class="breadcrumbs">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a><span class="sep">/</span><span>Collab Rooms</span>
+        </div>
         <div class="rooms-header">
             <h1>Open Collab Rooms</h1>
-            <a href="/collab_room" class="create-btn">+ Create Room</a>
+            <a href="{{ url_for('collab_room') }}" class="create-btn">+ Create Room</a>
         </div>
 
         {% if rooms %}
@@ -252,7 +229,7 @@
             <div class="empty-state">
                 <div class="empty-state-icon">🚀</div>
                 <p>No collab rooms yet. Be the first to create one!</p>
-                <a href="/collab_room" class="create-btn">Create Room</a>
+                <a href="{{ url_for('collab_room') }}" class="create-btn">Create Room</a>
             </div>
         {% endif %}
     </div>

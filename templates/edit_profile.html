@@ -155,8 +155,22 @@ body {
             <a href="{{ url_for('logout') }}" class="nav-muted">Logout</a>
         </nav>
     </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-stack">
+        {% for category, message in messages %}
+        <div class="flash-message {% if category == 'error' %}flash-error{% elif category == 'success' %}flash-success{% else %}flash-info{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
 
     <div class="edit-container">
+        <div class="breadcrumbs">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a><span class="sep">/</span><a href="{{ url_for('profile') }}">Profile</a><span class="sep">/</span><span>Edit</span>
+        </div>
         <div class="edit-card">
             <h2>Update Your Information</h2>
             <form method="post">
@@ -169,6 +183,7 @@ body {
                         class="form-input" 
                         value="{{ user[0] }}" 
                         required
+                        minlength="2"
                         placeholder="Enter your name"
                     >
                 </div>
@@ -192,6 +207,7 @@ body {
                         class="form-input" 
                         value="{{ user[2] }}" 
                         required
+                        minlength="2"
                         placeholder="e.g., Frontend, Backend, AI/ML"
                     >
                     <p class="form-hint">Separate multiple interests with commas</p>

@@ -18,8 +18,22 @@
             <a href="{{ url_for('logout') }}" class="nav-muted">Logout</a>
         </nav>
     </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-stack">
+        {% for category, message in messages %}
+        <div class="flash-message {% if category == 'error' %}flash-error{% elif category == 'success' %}flash-success{% else %}flash-info{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
 
     <div class="inbox-container">
+        <div class="breadcrumbs">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a><span class="sep">/</span><span>Messages</span>
+        </div>
         <h2>Inbox</h2>
         {% if conversations %}
             {% for c in conversations %}
@@ -33,7 +47,7 @@
             <div class="inbox-empty">
                 <p>No conversations yet.</p>
                 <p>Connect with developers and start messaging.</p>
-                <p style="margin-top: 16px;"><a href="{{ url_for('dashboard') }}">Go to dashboard</a></p>
+                <p style="margin-top: 16px;"><a class="btn btn-primary" href="{{ url_for('find_devs') }}">Find Developers</a></p>
             </div>
         {% endif %}
     </div>

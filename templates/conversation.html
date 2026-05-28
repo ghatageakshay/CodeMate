@@ -106,9 +106,30 @@
             <a href="{{ url_for('logout') }}" class="nav-muted">Logout</a>
         </nav>
     </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-stack">
+        {% for category, message in messages %}
+        <div class="flash-message {% if category == 'error' %}flash-error{% elif category == 'success' %}flash-success{% else %}flash-info{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
 
     <div class="chat-wrap">
+        <div class="breadcrumbs">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a><span class="sep">/</span><a href="{{ url_for('inbox') }}">Messages</a><span class="sep">/</span><span>Conversation</span>
+        </div>
+        <a href="{{ url_for('inbox') }}" class="back-link">← Back to inbox</a>
         <div class="chat-container">
+            {% if not messages %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">💬</div>
+                    <p>No messages yet. Start the conversation.</p>
+                </div>
+            {% endif %}
             {% for m in messages %}
                 {% if m[0] == user_id %}
                     <div class="message sent">
@@ -126,10 +147,20 @@
     </div>
 
     <div class="message-input">
-        <form method="post" action="{{ url_for('send_message', receiver_id=receiver_id) }}">
+        <form method="post" action="{{ url_for('send_message', receiver_id=receiver_id) }}" id="message-form">
             <input type="text" name="message" placeholder="Type a message…" required autocomplete="off">
-            <button type="submit">Send</button>
+            <button type="submit" id="send-btn">Send</button>
         </form>
     </div>
+    <script>
+        const messageForm = document.getElementById("message-form");
+        const sendBtn = document.getElementById("send-btn");
+        if (messageForm) {
+            messageForm.addEventListener("submit", function () {
+                sendBtn.textContent = "Sending...";
+                sendBtn.disabled = true;
+            });
+        }
+    </script>
 </body>
 </html>

@@ -222,8 +222,22 @@ body {
             <a href="{{ url_for('logout') }}" class="nav-muted">Logout</a>
         </nav>
     </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-stack">
+        {% for category, message in messages %}
+        <div class="flash-message {% if category == 'error' %}flash-error{% elif category == 'success' %}flash-success{% else %}flash-info{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% endwith %}
 
     <div class="connections-container">
+        <div class="breadcrumbs">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a><span class="sep">/</span><span>Connections</span>
+        </div>
         <div class="tabs">
             <button type="button" class="tab active" onclick="showTab(event, 'incoming')">
                 Incoming Requests
@@ -269,6 +283,7 @@ body {
             <div class="empty-state">
                 <div class="empty-state-icon">📬</div>
                 <p>No incoming requests</p>
+                <a href="{{ url_for('find_devs') }}" class="btn btn-primary">Find Developers</a>
             </div>
             {% endif %}
         </div>
@@ -290,6 +305,7 @@ body {
             <div class="empty-state">
                 <div class="empty-state-icon">📤</div>
                 <p>No sent requests</p>
+                <a href="{{ url_for('find_devs') }}" class="btn btn-primary">Send a Request</a>
             </div>
             {% endif %}
         </div>
@@ -314,6 +330,7 @@ body {
             <div class="empty-state">
                 <div class="empty-state-icon">👥</div>
                 <p>No connections yet</p>
+                <a href="{{ url_for('find_devs') }}" class="btn btn-primary">Start Connecting</a>
             </div>
             {% endif %}
         </div>
